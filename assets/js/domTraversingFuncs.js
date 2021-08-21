@@ -34,26 +34,54 @@ export function callbackForActiveButton(event, stateName, buttonEl, stateManager
     tableEl.className = `${stateName}`
     
     if(stateName === START_NODE || stateName === TARGET_NODE){ // once clicked anywhere on a page - unselects whatever button was clicked before (start node or target node))
-      setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener (finish current event handling batch first, then execute this add event listener
+      setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener
         bodyEl.addEventListener('click', (e) => {
-          callbackForDeactivatedButton(e, stateManager, stateName, buttonEl, tableEl, bodyEl)
+          callbackForDeactivatedTargetStartButtons(e, stateManager, stateName, buttonEl, tableEl, bodyEl)
         }, {once: true})
       }, 0);
     } else if(stateName === WALL_NODE){
+      function handleMouseMove(e){
+        if(e.target.tagName !== 'TD'){
+          return
+        }
+        let [col, row] = e.target.className.match(/\d+/g)
+        let locationCoordinates = `${row}-${col}`
+        if(stateManager.state(WALL_NODE).location.has(locationCoordinates)){
+          return
+        }
+        let targetClassList = e.target.classList.add(WALL_NODE)
+        let location = stateManager.state(WALL_NODE)['location']
+        location.add(locationCoordinates)
+      }
       
+      bodyEl.addEventListener('mousedown', (e) => {
+        handleMouseMove(e) // bug fixed node activates for when only pressing one node (there is no move movement besides a click)
+        bodyEl.addEventListener('mousemove', handleMouseMove)
+      }, {once: true})
+
+      bodyEl.addEventListener('mouseup', e =>{
+        bodyEl.removeEventListener('mousemove', handleMouseMove)
+        stateManager.changeState(WALL_NODE, 'active')
+        if(stateManager.anyActive()){
+          return
+        }
+        bodyEl.style.cursor = 'auto'
+        tableEl.className = ''
+        buttonEl.style.cursor = 'pointer'
+      }, {once: true})
     }
   }
 }
 
-function callbackForDeactivatedButton(e, stateManager, stateName, buttonEl, tableEl, bodyEl){ // this applies only for Start and Target nodes
+function callbackForDeactivatedTargetStartButtons(e, stateManager, stateName, buttonEl, tableEl, bodyEl){ // this applies only for Start and Target nodes
   if(e.target.className.includes('col')){
     let [col, row] = e.target.className.match(/\d+/g)
 
     let lastCell = document.querySelector(`td.${stateName}`)
     if(lastCell){
-      lastCell.className = lastCell.className.replace(` ${stateName}`, '')
+      lastCell.classList.remove(stateName)
     }
-    e.target.className += ` ${stateName}`
+    e.target.classList.add(stateName)
   }
   stateManager.changeState(stateName, 'active')
   if(stateManager.anyActive()){ // checks if any other button's state is activated before this got removed (in that case return, don't execute code below)
@@ -63,3 +91,4 @@ function callbackForDeactivatedButton(e, stateManager, stateName, buttonEl, tabl
   tableEl.className = ''
   buttonEl.style.cursor = 'pointer'
 }
+

@@ -1,19 +1,85 @@
 export default class Graph {
-  constructor(totalVertices) {
+  constructor(totalRows, totalColumns) {
     this.vertices = [];
-    this.V = totalVertices; // count of total vertices in the graph
+    this.rowCount = totalRows; // count of total vertices in the graph
+    this.colCount = totalColumns
     this.E = 0; // count of total edges in the graph
-    for (let i = 0; i < totalVertices; i++) {
-      this.vertices.push([]);
+    
+    this.initializeGraph()
+  }
+
+  initializeGraph(){
+    let validateCoordinate = (row, column) => {
+      if(row < 0 || row >= this.rowCount){
+        return false
+      }
+      if(column < 0 || column >= this.colCount){
+        return false
+      }
+      return true
+    }
+
+    for (let i = 0; i < totalRows; i++) {
+      let row = []
+      for(let j = 0; j < totalColumns; j++){
+        let vertex = []
+        let possibleNeighbors = [[i, j - 1], [i, j + 1], [i - 1, j], [i + 1, j]]
+        for(let k = 0; k < possibleNeighbors.length; k++){
+          if(this.validateCoordinate(possibleNeighbors[k])){
+            vertex.push(possibleNeighbors[k])
+          }
+        }
+        row.push(vertex)
+      }
+      this.vertices.push(row)
     }
   }
 
-  addEdge(a, b) {
-    if (a < 0 || b < 0 || a >= this.V || b >= this.V) {
-      throw new Error("a or b is not valid");
+  validateCoordinate(row, column){
+    if(row < 0 || row >= this.rowCount){
+      return false
     }
-    this.vertices[a].push(b);
-    this.vertices[b].push(a);
+    if(column < 0 || column >= this.colCount){
+      return false
+    }
+    return true
+  }
+
+  addWall(i, j){
+    let possibleNeighbors = [[i, j - 1], [i, j + 1], [i - 1, j], [i + 1, j]].filter(coord => {
+      if(this.validateCoordinate(coord[0], coord[1])){
+        return true
+      }
+      return false
+    })
+
+    for(let k = 0; k < possibleNeighbors.length; k++){
+      let neighbors = possibleNeighbors[k]
+      let [x, y] = neighbors
+      let newArray = this.vertices[x][y].filter(coord => {
+        if(coord[0] === i && coord[1] === j){
+          return false
+        }
+        return true
+      })
+      this.vertices[x][y] = newArray
+    }
+    this.vertices[i][j] = []
+  }
+
+  removeWall(i, j) {
+    let neighbors = [[i, j - 1], [i, j + 1], [i - 1, j], [i + 1, j]].filter(coord => {
+      if(this.validateCoordinate(coord[0], coord[1])){
+        return true
+      }
+      return false
+    })
+
+    for(let k = 0; k < neighbors.length; k++){
+      let [x, y] = neighbors[k]
+      this.vertices[x][y].push([i, j])
+    }
+    this.vertices[i][j] = neighbors
     this.E++;
   }
 

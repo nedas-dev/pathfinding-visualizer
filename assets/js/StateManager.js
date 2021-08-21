@@ -12,7 +12,7 @@ export default class StateManager{
     }
       this.wallNode = {
         active: false,
-        location: []
+        location: new Set()
     }
     }
 
