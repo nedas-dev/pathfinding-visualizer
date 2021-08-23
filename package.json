@@ -4,7 +4,11 @@
   "description": "Graph Algorithms Visualizer",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "deploy": "gh-pages -d dist"
+=======
+    "test": "echo \"Error: no test specified\" && exit 1"
+>>>>>>> c8f9e46a75c3bb0f752ec0475d176b60aee41ed4
   },
   "repository": {
     "type": "git",
@@ -15,9 +19,13 @@
   "bugs": {
     "url": "https://github.com/nedas-dev/graph-algo-visualizer/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/nedas-dev/graph-algo-visualizer#readme",
   "devDependencies": {
     "gh-pages": "^3.2.3",
     "webpack-cli": "^4.8.0"
   }
+=======
+  "homepage": "https://github.com/nedas-dev/graph-algo-visualizer#readme"
+>>>>>>> c8f9e46a75c3bb0f752ec0475d176b60aee41ed4
 }
