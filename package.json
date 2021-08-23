@@ -4,7 +4,8 @@
   "description": "Graph Algorithms Visualizer",
   "main": "index.js",
   "scripts": {
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "scss-watch": "sass --watch ./src/scss:./src/css"
   },
   "repository": {
     "type": "git",

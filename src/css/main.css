@@ -16,32 +16,32 @@ body {
   min-height: 5px;
 }
 #table tr td.start-node {
-  background-image: url(../images/start.svg), none;
+  background-image: url(/assets/images/start.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #table tr td.target-node {
-  background-image: url(../images/target.svg), none;
+  background-image: url(/assets/images/target.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #table tr td.wall-node {
-  background-image: url(../images/wall.svg), none;
+  background-image: url(/assets/images/wall.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #table.start-node td:hover {
-  background-image: url(../images/start.svg), none;
+  background-image: url(/assets/images/start.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #table.target-node td:hover {
-  background-image: url(../images/target.svg), none;
+  background-image: url(/assets/images/target.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
 #table.wall-node td:hover {
-  background-image: url(../images/wall.svg), none;
+  background-image: url(/assets/images/wall.svg), none;
   background-repeat: no-repeat;
   background-size: cover;
 }
