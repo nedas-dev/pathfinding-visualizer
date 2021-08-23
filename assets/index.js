@@ -34,6 +34,6 @@ bodyEl.addEventListener('dblclick', e => {
 })
 
 let graph = new Graph(totalColumns, totalRows);
-graph.addWall(5,5)
+// graph.addWall(5,5)
 // graph.addEdge(0, 1);
 // let pathFinder = new DepthFirstPaths(graph, 6);
