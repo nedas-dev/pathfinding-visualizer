@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#table {
+  margin: auto;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  width: 98%;
+  max-width: 1200px;
+}
+#table tr td {
+  border: 0.5px solid black;
+  min-width: 5px;
+  min-height: 5px;
+}
+#table tr td.start-node {
+  background-image: url(/assets/images/start.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#table tr td.target-node {
+  background-image: url(/assets/images/target.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#table tr td.wall-node {
+  background-image: url(/assets/images/wall.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#table.start-node td:hover {
+  background-image: url(/assets/images/start.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#table.target-node td:hover {
+  background-image: url(/assets/images/target.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#table.wall-node td:hover {
+  background-image: url(/assets/images/wall.svg), none;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#tools {
+  font-size: 12px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  flex-direction: column;
+  padding: 5px;
+  max-width: 1200px;
+}
+#tools .tool {
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px;
+  border: 1px solid #8e8c8c;
+  margin-bottom: 7px;
+  color: #656565;
+  width: 100px;
+}
+
+/*# sourceMappingURL=main.css.map */
