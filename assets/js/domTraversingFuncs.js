@@ -45,7 +45,6 @@ export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl
 
     stateManager.changeState(stateName, 'active')
     if(stateManager.anyActive()){ // checks if any other button's state is activated before this got removed (in that case return, don't execute code below)
-      console.log('yes')
       return
     }
     bodyEl.style.cursor = 'auto'
@@ -62,7 +61,8 @@ export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl
     setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener (avoiding to get batched together with outer function)
       bodyEl.addEventListener('click', (e) => {
         callbackToDeactivateStartOrTargetButton(e)
-      }, {once: true})
+      }, {once: true,
+        capture: true})
     }, 0)
   }
 }
@@ -104,7 +104,7 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
       bodyEl.addEventListener('mousedown', (e) => {
         handleMouseMove(e) // bug fixed node (triggers to add a wall when clicked only on a single cell (there is no movement)
         bodyEl.addEventListener('mousemove', handleMouseMove) // if mouse moving while it is clicked down - add the wall over the cells the user hovers
-      }, {once: true})
+      }, {once: true, capture: true})
 
       bodyEl.addEventListener('mouseup', callbackToDeactivateWallButton, {once: true}) // once mouse left button is released deactivate wall button
     }

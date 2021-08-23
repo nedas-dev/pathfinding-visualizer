@@ -19,11 +19,11 @@ const stateManager = new StateManager()
 initializeTable(tableEl, bodyEl)
 listenerForTableResizing(tableEl)
 
-startNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, stateManager, bodyEl, tableEl, graph), true)
+startNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, stateManager, bodyEl, tableEl, graph))
 
-targetNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, TARGET_NODE, targetNodeButton, stateManager, bodyEl, tableEl, graph), true)
+targetNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, TARGET_NODE, targetNodeButton, stateManager, bodyEl, tableEl, graph))
 
-wallNodeButton.addEventListener('click', (e) => callbackToActivateWallButton(e, WALL_NODE, wallNodeButton, stateManager, bodyEl, tableEl, graph), true)
+wallNodeButton.addEventListener('click', (e) => callbackToActivateWallButton(e, WALL_NODE, wallNodeButton, stateManager, bodyEl, tableEl, graph))
 
 
 bodyEl.addEventListener('dblclick', e => {
