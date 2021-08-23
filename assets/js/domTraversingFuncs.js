@@ -1,6 +1,7 @@
+import Graph from './Graph.js'
 import {START_NODE, TARGET_NODE, WALL_NODE, totalRows, totalColumns} from './settings.js'
 
-export function initializeTable(tableEl, bodyEl){ // creates a table with cells
+export function initializeTable(tableEl, bodyEl){ // creates a table with cells (rows and columns)
     for(let i = 0; i < totalRows; i++){
         let tr = document.createElement('tr')
         tr.className = `row row-${i}`
@@ -14,7 +15,7 @@ export function initializeTable(tableEl, bodyEl){ // creates a table with cells
     bodyEl.appendChild(tableEl)
 }
 
-export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 16:9 (for the cells to be even size no matter of how wide it is)
+export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 16:9 (for the cells to be equal size no matter of how wide or tall it is)
     window.onload = () => {
         let width = tableEl.clientWidth
         tableEl.style.height = width * 0.625
@@ -26,69 +27,104 @@ export function listenerForTableResizing(tableEl){ // to maintain table's ratio 
     })
   }
 
-export function callbackForActiveButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl){
+export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
+  function callbackToDeactivateStartOrTargetButton(e){
+    resetCellIfOccupied(e, stateManager, graph)
+
+    if(e.target.tagName === 'TD'){
+      let [row, col] = e.target.className.match(/\d+/g)
+  
+      let lastCell = document.querySelector(`td.${stateName}`)
+      if(lastCell){
+        lastCell.classList.remove(stateName)
+      }
+      e.target.classList.add(stateName)
+
+      stateManager.state(stateName).location = [row, col]
+    }
+
+    stateManager.changeState(stateName, 'active')
+    if(stateManager.anyActive()){ // checks if any other button's state is activated before this got removed (in that case return, don't execute code below)
+      console.log('yes')
+      return
+    }
+    bodyEl.style.cursor = 'auto'
+    tableEl.className = ''
+    buttonEl.style.cursor = 'pointer'
+  }
+
   stateManager.changeState(stateName, 'active')
   if(stateManager.state(stateName).active){ // 
     bodyEl.style.cursor = 'pointer'
     buttonEl.style.cursor = 'pointer'
     tableEl.className = `${stateName}`
     
-    if(stateName === START_NODE || stateName === TARGET_NODE){ // once clicked anywhere on a page - unselects whatever button was clicked before (start node or target node))
-      setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener
-        bodyEl.addEventListener('click', (e) => {
-          callbackForDeactivatedTargetStartButtons(e, stateManager, stateName, buttonEl, tableEl, bodyEl)
-        }, {once: true})
-      }, 0);
-    } else if(stateName === WALL_NODE){
-      function handleMouseMove(e){
-        if(e.target.tagName !== 'TD'){
-          return
-        }
-        let [col, row] = e.target.className.match(/\d+/g)
-        let locationCoordinates = `${row}-${col}`
-        if(stateManager.state(WALL_NODE).location.has(locationCoordinates)){
-          return
-        }
-        let targetClassList = e.target.classList.add(WALL_NODE)
-        let location = stateManager.state(WALL_NODE)['location']
-        location.add(locationCoordinates)
-      }
-      
-      bodyEl.addEventListener('mousedown', (e) => {
-        handleMouseMove(e) // bug fixed node activates for when only pressing one node (there is no move movement besides a click)
-        bodyEl.addEventListener('mousemove', handleMouseMove)
+    setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener (avoiding to get batched together with outer function)
+      bodyEl.addEventListener('click', (e) => {
+        callbackToDeactivateStartOrTargetButton(e)
       }, {once: true})
-
-      bodyEl.addEventListener('mouseup', e =>{
-        bodyEl.removeEventListener('mousemove', handleMouseMove)
-        stateManager.changeState(WALL_NODE, 'active')
-        if(stateManager.anyActive()){
-          return
-        }
-        bodyEl.style.cursor = 'auto'
-        tableEl.className = ''
-        buttonEl.style.cursor = 'pointer'
-      }, {once: true})
-    }
+    }, 0)
   }
 }
 
-function callbackForDeactivatedTargetStartButtons(e, stateManager, stateName, buttonEl, tableEl, bodyEl){ // this applies only for Start and Target nodes
-  if(e.target.className.includes('col')){
-    let [col, row] = e.target.className.match(/\d+/g)
+export function callbackToActivateWallButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
+  function handleMouseMove(e){
+    resetCellIfOccupied(e, stateManager, graph)
 
-    let lastCell = document.querySelector(`td.${stateName}`)
-    if(lastCell){
-      lastCell.classList.remove(stateName)
+    if(e.target.tagName !== 'TD'){
+      return
+    }
+    let [row, col] = e.target.className.match(/\d+/g)
+    let locationCoordinates = `${row}-${col}`
+    if(stateManager.state(stateName).location.has(locationCoordinates)){
+      return
     }
     e.target.classList.add(stateName)
+    graph.addWall(row, col)
   }
+
+  function callbackToDeactivateWallButton(e){
+    bodyEl.removeEventListener('mousemove', handleMouseMove)
+    stateManager.changeState(stateName, 'active')
+    if(stateManager.anyActive()){
+      return
+    }
+    bodyEl.style.cursor = 'auto'
+    tableEl.className = ''
+    buttonEl.style.cursor = 'pointer'
+  }
+
   stateManager.changeState(stateName, 'active')
-  if(stateManager.anyActive()){ // checks if any other button's state is activated before this got removed (in that case return, don't execute code below)
-    return
+  if(stateManager.state(stateName).active){ // 
+    bodyEl.style.cursor = 'pointer'
+    buttonEl.style.cursor = 'pointer'
+    tableEl.className = `${stateName}`
+    
+    if(stateName === WALL_NODE){
+      bodyEl.addEventListener('mousedown', (e) => {
+        handleMouseMove(e) // bug fixed node (triggers to add a wall when clicked only on a single cell (there is no movement)
+        bodyEl.addEventListener('mousemove', handleMouseMove) // if mouse moving while it is clicked down - add the wall over the cells the user hovers
+      }, {once: true})
+
+      bodyEl.addEventListener('mouseup', callbackToDeactivateWallButton, {once: true}) // once mouse left button is released deactivate wall button
+    }
   }
-  bodyEl.style.cursor = 'auto'
-  tableEl.className = ''
-  buttonEl.style.cursor = 'pointer'
 }
 
+function resetCellIfOccupied(e, stateManager, graph){
+  if(e.target.tagName === 'TD' && e.target.classList.length > 2){
+    let classList = [...e.target.classList]
+    let [row, col] = e.target.className.match(/\d+/g)
+
+    if(classList[2] === START_NODE){
+      stateManager.state(START_NODE).location = null
+      e.target.classList.remove(START_NODE)
+    } else if(classList[2] === TARGET_NODE){
+      stateManager.state(TARGET_NODE).location = null
+      e.target.classList.remove(TARGET_NODE)
+    } else if(classList[2] === WALL_NODE){
+      graph.removeWall(row, col)
+      e.target.classList.remove(WALL_NODE)
+    }
+  }
+}
