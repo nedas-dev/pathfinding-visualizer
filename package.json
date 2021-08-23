@@ -1,0 +1,23 @@
+{
+  "name": "graph-visualizer",
+  "version": "1.0.0",
+  "description": "Graph Algorithms Visualizer",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nedas-dev/graph-algo-visualizer.git"
+  },
+  "author": "Nedas Snarskis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nedas-dev/graph-algo-visualizer/issues"
+  },
+  "homepage": "https://github.com/nedas-dev/graph-algo-visualizer#readme",
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "webpack-cli": "^4.8.0"
+  }
+}
