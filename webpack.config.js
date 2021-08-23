@@ -7,7 +7,7 @@ module.exports = {
         filename: 'bundle.js',
       },
       module: {
-        rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+        rules: [{ test: /\.css$/, use: 'css-loader' }],
       },
   };
   

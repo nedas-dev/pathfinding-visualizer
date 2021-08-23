@@ -16,19 +16,19 @@ body {
       min-height: 5px;
 
       &.start-node {
-        background-image: url(/assets/images/start.svg), none;
+        background-image: url(../images/start.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
       }
 
       &.target-node {
-        background-image: url(/assets/images/target.svg), none;
+        background-image: url(../images/target.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
       }
 
       &.wall-node {
-        background-image: url(/assets/images/wall.svg), none;
+        background-image: url(../images/wall.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
       }
@@ -37,7 +37,7 @@ body {
 
   &.start-node {
     td:hover {
-      background-image: url(/assets/images/start.svg), none;
+      background-image: url(../images/start.svg), none;
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -45,7 +45,7 @@ body {
 
   &.target-node {
     td:hover {
-      background-image: url(/assets/images/target.svg), none;
+      background-image: url(../images/target.svg), none;
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -53,7 +53,7 @@ body {
 
   &.wall-node {
     td:hover {
-      background-image: url(/assets/images/wall.svg), none;
+      background-image: url(../images/wall.svg), none;
       background-repeat: no-repeat;
       background-size: cover;
     }
