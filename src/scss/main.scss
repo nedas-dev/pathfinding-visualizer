@@ -9,7 +9,7 @@ body {
   margin-top: 1rem;
   border-collapse: collapse;
   width: 98%;
-  max-width: 750px;
+  max-width: 1400px;
   margin-bottom: 1rem;
   tr {
     td {
@@ -21,18 +21,46 @@ body {
         background-image: url(../images/start.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
+        animation: expanding 1s forwards;
       }
 
       &.target-node {
         background-image: url(../images/target.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
+        animation: expanding 1s forwards;
       }
 
       &.wall-node {
         background-image: url(../images/wall.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
+        animation: expanding 0.8s forwards;
+      }
+
+      &.visited {
+        background-color: rgb(219, 219, 219);
+      }
+
+      &.path-node {
+        animation: scaling 1.2s forwards;
+
+        @keyframes scaling {
+          0% {
+            transform: scale(1);
+            background-color: rgb(4, 71, 255);
+            transform: rotateZ(20deg);
+          }
+          50% {
+            transform: scale(1.4);
+            transform: rotateZ(-20deg);
+          }
+          100% {
+            transform: scale(1);
+            background-color: greenyellow;
+            transform: rotateZ(0);
+          }
+        }
       }
     }
   }
@@ -68,8 +96,8 @@ header#nav {
   width: 95%;
   display: flex;
   justify-content: space-around;
+  flex-direction: column;
   padding: 0rem 1rem;
-
   div#node-buttons {
     font-size: 12px;
     display: flex;
@@ -128,5 +156,17 @@ header#nav {
         }
       }
     }
+  }
+}
+
+@keyframes expanding {
+  0% {
+    transform: scale(0.1);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -1,24 +1,42 @@
+import {totalRows, totalColumns} from './settings'
+
 export default class DepthFirstPaths {
-    constructor(graphObj, source) {
-      this.s = source; /* s - starting vertex point*/
+    constructor(graphObj, start_location, target_location) {
+      this.start_location = start_location; /* starting vertex point*/
+      this.target_location = target_location // target vertex point
       this.edgeTo = [];
       this.marked = [];
-  
-      for (let i = 0; i < graphObj.V; i++) {
-        this.edgeTo.push(null);
-        this.marked.push(false);
+      
+      for (let i = 0; i < totalRows; i++) {
+        let row1 = []
+        let row2 = []
+        for(let j = 0; j < totalColumns; j++){
+          row1.push(null)
+          row2.push(false)
+        }
+        this.edgeTo.push(row1)
+        this.marked.push(row2)
       }
-  
-      this.dfs(graphObj, source);
+      (async() => {
+        await this.dfs(graphObj, start_location);
+        await this.pathTo(target_location)
+      })()
     }
   
-    dfs(graphObj, source) {
-      this.marked[source] = true;
-      let adjList = graphObj.adj(source);
-      for (let i = 0; i < adjList.length; i++) {
-        if (!this.marked[adjList[i]]) {
-          this.edgeTo[adjList[i]] = source;
-          this.dfs(graphObj, adjList[i]);
+    async dfs(graphObj, s) {
+      if(this.marked[this.target_location[0]][this.target_location[1]]){
+        return
+      }
+      await new Promise(resolve => setTimeout(resolve, 50))
+      document.querySelector(`td.cell-${s[0]}-${s[1]}`).classList.add('visited')
+      this.marked[s[0]][s[1]] = true
+      let neighborList = graphObj.vertices[s[0]][s[1]]
+      for(let i = 0; i < neighborList.length; i++){
+        let rowIndex = neighborList[i][0]
+        let colIndex = neighborList[i][1]
+        if(!this.marked[rowIndex][colIndex]){
+          this.edgeTo[rowIndex][colIndex] = [s[0], s[1]]
+          await this.dfs(graphObj, neighborList[i])
         }
       }
     }
@@ -34,18 +52,18 @@ export default class DepthFirstPaths {
       return false;
     }
   
-    pathTo(v) {
-      if (v < 0 || v >= this.marked.length) {
-        throw new Error("v is not valid (pathTo(v))");
+    async pathTo(target_location) {
+      let i = target_location
+      if(this.edgeTo[i[0]][i[1]] === null){
+        return
       }
-      if (!this.marked[v]) {
-        return null;
+      while(true){
+        document.querySelector(`td.cell-${i[0]}-${i[1]}`).classList.add('path-node')
+        if(this.start_location[0] === i[0] && this.start_location[1] === i[1]){
+          break
+        }
+        i = this.edgeTo[i[0]][i[1]]
+        await new Promise(resolve => setTimeout(resolve, 50))
       }
-      let path = [];
-      for (let i = v; i != this.s; i = this.edgeTo[i]) {
-        path.push(i);
-      }
-      path.push(this.s);
-      return path;
     }
 }

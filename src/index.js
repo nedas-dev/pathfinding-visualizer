@@ -1,3 +1,4 @@
+import "babel-polyfill" // this is for babel to work with async/await functions
 import './scss/main.scss'
 import DepthFirstPaths from './js/DepthFirstPaths.js'
 import Graph from './js/Graph.js'
@@ -5,7 +6,8 @@ import {
   initializeTable, 
   listenerForTableResizing,
   callbackToActivateWallButton,
-  callbackToActivateStartOrTargetButton
+  callbackToActivateStartOrTargetButton,
+  resetVisitedCSS
 } from './js/domTraversingFuncs.js'
 import StateManager from './js/StateManager.js'
 import {START_NODE, TARGET_NODE, WALL_NODE, totalColumns, totalRows} from './js/settings.js'
@@ -36,12 +38,15 @@ bodyEl.addEventListener('dblclick', e => {
   console.log(stateManager)
 })
 
-let graph = new Graph(totalColumns, totalRows);
+let graph = new Graph(totalRows, totalColumns);
 
 startButton.addEventListener('click', e => {
   if(stateManager.state(START_NODE).location && stateManager.state(TARGET_NODE).location){
-    let pathFinder = new DepthFirstPaths(graph, 6);
+    resetVisitedCSS()
+    let startCoord = stateManager.state(START_NODE).location
+    let targetCoord = stateManager.state(TARGET_NODE).location
+    let pathFinder = new DepthFirstPaths(graph, startCoord, targetCoord);
   } else{
-    alert('Start and Target nodes are required for the path finder to start!')
+    alert('Start and Target nodes are required for the path finder to take off!')
   }
 })

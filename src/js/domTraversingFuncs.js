@@ -7,7 +7,7 @@ export function initializeTable(tableEl, bodyEl){ // adds table rows and columns
       tr.className = `row row-${i}`
       for(let j = 0; j < totalColumns; j++){
           let td = document.createElement('td')
-          td.className = `col ${i}-${j}`
+          td.className = `col cell-${i}-${j}`
           tr.appendChild(td)
       }
       tableEl.appendChild(tr)
@@ -15,25 +15,25 @@ export function initializeTable(tableEl, bodyEl){ // adds table rows and columns
   bodyEl.appendChild(tableEl)
 }
 
-export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 16:9 (for the cells to be equal size no matter of how wide or tall it is)
+export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 2:1 (for the cells to be equal size no matter of how wide or tall it is)
   window.onload = () => {
       let width = tableEl.clientWidth
-      tableEl.style.height = width * 0.625
-    }
+      tableEl.style.height = width * 0.50
 
   window.addEventListener('resize', () => {
     let width = tableEl.clientWidth
-    tableEl.style.height = width * 0.625
+    tableEl.style.height = width * 0.50
   })
   }
-
+}
 export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
   function callbackToDeactivateStartOrTargetButton(e){
     resetCellIfOccupied(e, stateManager, graph)
 
     if(e.target.tagName === 'TD'){
       let [row, col] = e.target.className.match(/\d+/g)
-  
+      row = parseInt(row)
+      col = parseInt(col)
       let lastCell = document.querySelector(`td.${stateName}`)
       if(lastCell){
         lastCell.classList.remove(stateName)
@@ -126,5 +126,16 @@ function resetCellIfOccupied(e, stateManager, graph){
       graph.removeWall(row, col)
       e.target.classList.remove(WALL_NODE)
     }
+  }
+}
+
+export function resetVisitedCSS(){
+  let visitedCells = document.querySelectorAll('td.visited')
+  let pathNodeCells = document.querySelectorAll('td.path-node')
+  for(let i = 0; i < visitedCells.length; i++){
+    visitedCells[i].classList.remove('visited')
+  }
+  for(let i = 0; i < pathNodeCells.length; i++){
+    pathNodeCells[i].classList.remove('path-node')
   }
 }

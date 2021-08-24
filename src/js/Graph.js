@@ -3,8 +3,7 @@ export default class Graph {
     this.vertices = [];
     this.totalRows = totalRows; // count of total vertices in the graph
     this.totalColumns = totalColumns
-    // this.E = 0; // count of total edges in the graph
-    
+  
     this.initializeGraph()
   }
 
