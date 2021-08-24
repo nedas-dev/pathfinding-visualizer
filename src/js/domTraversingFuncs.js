@@ -1,30 +1,30 @@
 import Graph from './Graph.js'
 import {START_NODE, TARGET_NODE, WALL_NODE, totalRows, totalColumns} from './settings.js'
 
-export function initializeTable(tableEl, bodyEl){ // creates a table with cells (rows and columns)
-    for(let i = 0; i < totalRows; i++){
-        let tr = document.createElement('tr')
-        tr.className = `row row-${i}`
-        for(let j = 0; j < totalColumns; j++){
-            let td = document.createElement('td')
-            td.className = `col ${i}-${j}`
-            tr.appendChild(td)
-        }
-        tableEl.appendChild(tr)
-    }
-    bodyEl.appendChild(tableEl)
+export function initializeTable(tableEl, bodyEl){ // adds table rows and columns (tr, td)
+  for(let i = 0; i < totalRows; i++){
+      let tr = document.createElement('tr')
+      tr.className = `row row-${i}`
+      for(let j = 0; j < totalColumns; j++){
+          let td = document.createElement('td')
+          td.className = `col ${i}-${j}`
+          tr.appendChild(td)
+      }
+      tableEl.appendChild(tr)
+  }
+  bodyEl.appendChild(tableEl)
 }
 
 export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 16:9 (for the cells to be equal size no matter of how wide or tall it is)
-    window.onload = () => {
-        let width = tableEl.clientWidth
-        tableEl.style.height = width * 0.625
-      }
-
-    window.addEventListener('resize', () => {
+  window.onload = () => {
       let width = tableEl.clientWidth
       tableEl.style.height = width * 0.625
-    })
+    }
+
+  window.addEventListener('resize', () => {
+    let width = tableEl.clientWidth
+    tableEl.style.height = width * 0.625
+  })
   }
 
 export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){

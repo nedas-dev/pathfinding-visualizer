@@ -3,25 +3,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pathfinding Visualizer by nedas-dev</title>
-    <link rel="stylesheet" href="./src/css/main.css" />
   </head>
   <body id="body">
-    <div id="tools">
-      <div id="start-node" class="tool">
-        <img width="12" height="12" src="./src/images/start.svg" /> Start Node
+    <header id="nav">
+      <div id="node-buttons">
+        <div id="start-node" class="tool">
+          <img width="12" height="12" src="./src/images/start.svg" /> Start Node
+        </div>
+
+        <div id="target-node" class="tool">
+          <img width="12" height="12" src="./src/images/target.svg" /> Target
+          Node
+        </div>
+
+        <div id="wall-node" class="tool">
+          <img width="12" height="12" src="./src/images/wall.svg" /> Wall Node
+        </div>
       </div>
 
-      <div id="target-node" class="tool">
-        <img width="12" height="12" src="./src/images/target.svg" /> Target Node
+      <div id="run-reset-buttons">
+        <div id="start-button" class="tool">
+          <img width="20" height="20" src="./src/images/rocket.png" /> START
+        </div>
+        <div id="reset-button" class="tool">
+          <img width="15" height="15" src="./src/images/delete.svg" /> RESET
+        </div>
       </div>
-
-      <div id="wall-node" class="tool">
-        <img width="12" height="12" src="./src/images/wall.svg" /> Wall Node
-      </div>
-    </div>
+    </header>
     <table id="table">
-      <!-- In index.js there are td, tr added here -->
+      <!-- In index.js there are tr, td added here -->
     </table>
-    <script defer type="module" src="./src/index.js"></script>
+    <script defer type="module" src="./dist/bundle.js"></script>
   </body>
 </html>

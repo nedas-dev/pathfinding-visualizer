@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "deploy": "gh-pages -d dist",
-    "scss-watch": "sass --watch ./src/scss:./src/css"
+    "scss-watch": "sass --watch ./src/scss:./src/css",
+    "build": "webpack",
+    "serve": "webpack server --config ./webpack.config.js --mode development --entry ./src/index.js --static-public-path ./dist/ --static-directory ./dist/"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,16 @@
   },
   "homepage": "https://github.com/nedas-dev/graph-algo-visualizer#readme",
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.2.0",
     "gh-pages": "^3.2.3",
-    "webpack-cli": "^4.8.0"
+    "resolve-url-loader": "^4.0.0",
+    "sass": "^1.38.0",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.0.0"
   }
 }
