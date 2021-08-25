@@ -5,34 +5,39 @@
     <title>Pathfinding Visualizer by nedas-dev</title>
   </head>
   <body id="body">
-    <header id="nav">
+    <nav id="sidebar">
+      <div id="logo">
+        <span>PATHFINDER <br> by nedas-dev</span>
+        <img id="arrow-img" width="35" height="35" src="./src/images/right-arrow.svg" />
+      </div>
       <div id="node-buttons">
         <div id="start-node" class="tool">
-          <img width="12" height="12" src="./src/images/start.svg" /> Start Node
+          <img width="35" height="35" src="./src/images/start.svg" /> <span>Start Node</span>
         </div>
 
         <div id="target-node" class="tool">
-          <img width="12" height="12" src="./src/images/target.svg" /> Target
-          Node
+          <img width="35" height="35" src="./src/images/target.svg" /> <span>Target Node</span>
         </div>
 
         <div id="wall-node" class="tool">
-          <img width="12" height="12" src="./src/images/wall.svg" /> Wall Node
+          <img width="35" height="35" src="./src/images/wall.svg" /> <span>Wall Node</span>
         </div>
-      </div>
 
-      <div id="run-reset-buttons">
         <div id="start-button" class="tool">
-          <img width="20" height="20" src="./src/images/rocket.png" /> START
+          <img width="35" height="35" src="./src/images/rocket.png" /> <span>START</span>
         </div>
+
         <div id="reset-button" class="tool">
-          <img width="15" height="15" src="./src/images/delete.svg" /> RESET
+          <img width="35" height="35" src="./src/images/delete.svg" /> <span>RESET</span>
         </div>
       </div>
-    </header>
-    <table id="table">
-      <!-- In index.js there are tr, td added here -->
-    </table>
+      
+    </nav>
+    <main id="main-content">
+      <table id="table">
+        <!-- In index.js initializeTable function takes care of the table's content -->
+      </table>
+    </main>
     <script defer type="module" src="./dist/bundle.js"></script>
   </body>
 </html>

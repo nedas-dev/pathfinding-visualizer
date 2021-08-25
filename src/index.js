@@ -50,3 +50,11 @@ startButton.addEventListener('click', e => {
     alert('Start and Target nodes are required for the path finder to take off!')
   }
 })
+
+document.getElementById('sidebar').addEventListener('mouseenter', (e) => {
+  document.getElementById('logo').classList.add('open')
+
+  document.getElementById('sidebar').addEventListener('mouseleave', e => {
+    document.getElementById('logo').classList.remove('open')
+  }, {once: true})
+})

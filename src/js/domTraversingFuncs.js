@@ -12,7 +12,6 @@ export function initializeTable(tableEl, bodyEl){ // adds table rows and columns
       }
       tableEl.appendChild(tr)
   }
-  bodyEl.appendChild(tableEl)
 }
 
 export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 2:1 (for the cells to be equal size no matter of how wide or tall it is)
