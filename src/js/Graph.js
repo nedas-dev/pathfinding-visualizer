@@ -1,13 +1,14 @@
 export default class Graph {
   constructor(totalRows, totalColumns) {
     this.vertices = [];
-    this.totalRows = totalRows; // count of total vertices in the graph
-    this.totalColumns = totalColumns
+    this.totalRows = totalRows; // count of total rows in the table
+    this.totalColumns = totalColumns // count of total columns per row
   
     this.initializeGraph()
   }
 
   initializeGraph(){
+    this.vertices = []
     for (let i = 0; i < this.totalRows; i++) {
       let row = []
       for(let j = 0; j < this.totalColumns; j++){

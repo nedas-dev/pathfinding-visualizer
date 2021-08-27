@@ -1,19 +1,25 @@
-import {START_NODE, TARGET_NODE, WALL_NODE} from './settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON} from './settings.js'
 
 export default class StateManager{
     constructor(){
-      this.startNode = {
-        active: false,
-        location: null
-    }
-      this.targetNode = {
-        active: false,
-        location: null
-    }
-      this.wallNode = {
-        active: false,
-        location: new Set()
-    }
+        this.startNode = {
+            active: false,
+            location: null
+        }
+        this.targetNode = {
+            active: false,
+            location: null
+        }
+        this.wallNode = {
+            active: false,
+            location: new Set()
+        }
+        this.sidebar = {
+            open: false
+        }
+        this.eraseButton = {
+            active: false,
+        }
     }
 
     state(name){
@@ -24,6 +30,10 @@ export default class StateManager{
                 return this.targetNode
             case WALL_NODE:
                 return this.wallNode
+            case SIDEBAR:
+                return this.sidebar
+            case ERASE_BUTTON:
+                return this.eraseButton
             default:
                 throw new Error('given name value could not match any given case')
         }
@@ -61,7 +71,7 @@ export default class StateManager{
     }
 
     anyActive(){
-        if(this.startNode.active || this.targetNode.active || this.wallNode.active){
+        if(this.startNode.active || this.targetNode.active || this.wallNode.active || this.eraseButton.active){
             return true
         }
         return false
