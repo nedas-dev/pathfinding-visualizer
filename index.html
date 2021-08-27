@@ -5,36 +5,42 @@
     <title>Pathfinding Visualizer by nedas-dev</title>
   </head>
   <body id="body">
-    <header id="nav">
-      <div id="node-buttons">
-        <div id="start-node" class="tool">
-          <img width="12" height="12" src="./dist/ad7054456b7a02d30166.svg" />
-          Start Node
-        </div>
-
-        <div id="target-node" class="tool">
-          <img width="12" height="12" src="./dist/920b182cfd5cf1d8c1de.svg" />
-          Target Node
-        </div>
-
-        <div id="wall-node" class="tool">
-          <img width="12" height="12" src="./dist/11ab118b02b80917c3c9.svg" />
-          Wall Node
-        </div>
+    <nav id="sidebar">
+      <div id="logo">
+        <span class="main"><span style="color: black">PATHFINDER</span> <br> by <i>nedas-dev</i></span>
+        <img id="arrow-img" width="35" height="35" src="./src/images/right-arrow.svg" />
       </div>
+      <ul id="node-buttons">
+        <li id="start-button" class="tool">
+          <img src="./src/images/rocket.svg" /> <span class="desc">Start</span>
+        </li>
+        <li id="start-node" class="tool">
+          <img src="./src/images/start.svg" /> <span class="desc">Start Node</span>
+        </li>
 
-      <div id="run-reset-buttons">
-        <div id="start-button" class="tool">
-          <img width="20" height="20" src="./src/images/rocket.png" /> START
-        </div>
-        <div id="reset-button" class="tool">
-          <img width="15" height="15" src="./src/images/delete.svg" /> RESET
-        </div>
-      </div>
-    </header>
-    <table id="table">
-      <!-- In index.js there are tr, td added here -->
-    </table>
+        <li id="target-node" class="tool">
+          <img src="./src/images/target.svg" /> <span class="desc">Target Node</span>
+        </li>
+
+        <li id="wall-node" class="tool">
+          <img src="./src/images/wall.svg" /> <span class="desc">Wall Node</span>
+        </li>
+
+        <li id="reset-button" class="tool">
+          <img src="./src/images/eraser.svg" /> <span class="desc">Erase Wall</span>
+        </li>
+
+        <li id="reset-button" class="tool">
+          <img src="./src/images/delete.svg" /> <span class="desc">Reset</span>
+        </li>
+      </ul>
+      
+    </nav>
+    <main id="main-content">
+      <table id="table">
+        <!-- In index.js initializeTable function takes care of the table's content -->
+      </table>
+    </main>
     <script defer type="module" src="./dist/bundle.js"></script>
   </body>
 </html>
