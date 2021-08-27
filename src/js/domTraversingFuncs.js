@@ -1,5 +1,5 @@
 import Graph from './Graph.js'
-import {START_NODE, TARGET_NODE, WALL_NODE, totalRows, totalColumns} from './settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, totalRows, totalColumns} from './settings.js'
 
 export function initializeTable(tableEl, bodyEl){ // adds table rows and columns (tr, td)
   for(let i = 0; i < totalRows; i++){
@@ -23,10 +23,9 @@ export function listenerForTableResizing(tableEl){ // to maintain table's ratio 
     let width = tableEl.clientWidth
     tableEl.style.height = width * 0.50
   })
-
-  
   }
 }
+
 export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
   function callbackToDeactivateStartOrTargetButton(e){
     resetCellIfOccupied(e, stateManager, graph)
@@ -129,7 +128,7 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
   }
 }
 
-function resetCellIfOccupied(e, stateManager, graph){
+export function resetCellIfOccupied(e, stateManager, graph){
   if(e.target.tagName === 'TD' && e.target.classList.length > 2){
     let classList = [...e.target.classList]
     let [row, col] = e.target.className.match(/\d+/g)
@@ -147,7 +146,7 @@ function resetCellIfOccupied(e, stateManager, graph){
   }
 }
 
-export function resetVisitedCSS(){
+export function resetVisitedCellCSS(){
   let visitedCells = document.querySelectorAll('td.visited')
   let pathNodeCells = document.querySelectorAll('td.path-node')
   for(let i = 0; i < visitedCells.length; i++){
@@ -156,4 +155,63 @@ export function resetVisitedCSS(){
   for(let i = 0; i < pathNodeCells.length; i++){
     pathNodeCells[i].classList.remove('path-node')
   }
+}
+
+export function resetPathFinder(SM, graph){ // resets table's css, graph (everything)
+  resetVisitedCellCSS()
+
+  let wallNodeCellsList = document.querySelectorAll(`td.${WALL_NODE}`)
+  
+  for(let i = 0; i < wallNodeCellsList.length; i++){
+    wallNodeCellsList[i].classList.remove(WALL_NODE)
+  }
+
+  graph.initializeGraph()
+  SM.state(WALL_NODE).location = new Set()
+}
+
+
+
+export function handleSidebarOpenClosed(SM, tableEl){
+  document.getElementById('arrow-img').addEventListener('click', (e) => {
+    document.getElementById(SIDEBAR).classList.toggle('active')
+    document.getElementById('logo').classList.toggle('open')
+    SM.state(SIDEBAR).open = !SM.state(SIDEBAR).open
+    
+    function resizeTableAfterCertainTime(ms){
+      setTimeout(() => {
+        let width = tableEl.clientWidth
+        tableEl.style.height = width * 0.50
+      }, ms)
+    }
+    resizeTableAfterCertainTime(150)
+    resizeTableAfterCertainTime(300)
+    resizeTableAfterCertainTime(600)
+  })
+}
+
+export function callbackForEraseButton(SM, tableEl, bodyEl, graph){
+  if(SM.state(ERASE_BUTTON).active){
+    return
+  }
+
+  function handleTableClick(e){
+    e.stopPropagation()
+    resetCellIfOccupied(e, SM, graph)
+  }
+
+  bodyEl.style.cursor = "url(/src/images/eraser-2.png) 1 16, pointer"
+  SM.state(ERASE_BUTTON).active = true
+  tableEl.className = ''
+  tableEl.addEventListener('click', handleTableClick)
+
+  setTimeout(() => { // not to be batched together with eraseCellButton click event
+    bodyEl.addEventListener('click', e => {
+    tableEl.removeEventListener('click', handleTableClick)
+    SM.state(ERASE_BUTTON).active = false
+    if(SM.anyActive()){
+      return
+    }
+    bodyEl.style.cursor = "auto" // reset the cursor to auto
+  }, {once: true})}, 0)
 }

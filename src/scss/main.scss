@@ -48,6 +48,7 @@ nav#sidebar {
   }
 
   ul#node-buttons {
+    overflow: auto;
     font-family: Roboto Condensed, sans-serif;
     letter-spacing: 1px;
     list-style: none;
@@ -82,6 +83,14 @@ nav#sidebar {
           background-color: $li-button-hover;
           cursor: pointer;
         }
+      }
+
+      &#start-button {
+        margin-bottom: 1rem;
+      }
+
+      &#wall-node {
+        margin-bottom: 1rem;
       }
     }
   }
@@ -148,7 +157,7 @@ main {
         min-width: 5px;
         min-height: 5px;
         &.start-node {
-          background-image: url(../images/start.svg), none;
+          background-image: url(../images/target2.svg), none;
           background-repeat: no-repeat;
           background-size: cover;
           animation: expanding 1s forwards;
@@ -207,7 +216,7 @@ main {
 
     &.start-node {
       td:hover {
-        background-image: url(../images/start.svg), none;
+        background-image: url(../images/target2.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
       }
