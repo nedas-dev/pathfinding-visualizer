@@ -7,30 +7,33 @@
   <body id="body">
     <nav id="sidebar">
       <div id="logo">
-        <span>PATHFINDER <br> by nedas-dev</span>
+        <span class="main"><span style="color: black">PATHFINDER</span> <br> by <i>nedas-dev</i></span>
         <img id="arrow-img" width="35" height="35" src="./src/images/right-arrow.svg" />
       </div>
-      <div id="node-buttons">
-        <div id="start-node" class="tool">
-          <img width="35" height="35" src="./src/images/start.svg" /> <span>Start Node</span>
-        </div>
+      <ul id="node-buttons">
+        <li id="start-button" class="tool">
+          <img src="./src/images/rocket.svg" /> <span class="desc">Start</span>
+        </li>
+        <li id="start-node" class="tool">
+          <img src="./src/images/start.svg" /> <span class="desc">Start Node</span>
+        </li>
 
-        <div id="target-node" class="tool">
-          <img width="35" height="35" src="./src/images/target.svg" /> <span>Target Node</span>
-        </div>
+        <li id="target-node" class="tool">
+          <img src="./src/images/target.svg" /> <span class="desc">Target Node</span>
+        </li>
 
-        <div id="wall-node" class="tool">
-          <img width="35" height="35" src="./src/images/wall.svg" /> <span>Wall Node</span>
-        </div>
+        <li id="wall-node" class="tool">
+          <img src="./src/images/wall.svg" /> <span class="desc">Wall Node</span>
+        </li>
 
-        <div id="start-button" class="tool">
-          <img width="35" height="35" src="./src/images/rocket.png" /> <span>START</span>
-        </div>
+        <li id="reset-button" class="tool">
+          <img src="./src/images/eraser.svg" /> <span class="desc">Erase Wall</span>
+        </li>
 
-        <div id="reset-button" class="tool">
-          <img width="35" height="35" src="./src/images/delete.svg" /> <span>RESET</span>
-        </div>
-      </div>
+        <li id="reset-button" class="tool">
+          <img src="./src/images/delete.svg" /> <span class="desc">Reset</span>
+        </li>
+      </ul>
       
     </nav>
     <main id="main-content">

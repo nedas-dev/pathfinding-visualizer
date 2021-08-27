@@ -1,19 +1,22 @@
-import {START_NODE, TARGET_NODE, WALL_NODE} from './settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR} from './settings.js'
 
 export default class StateManager{
     constructor(){
-      this.startNode = {
+        this.startNode = {
         active: false,
         location: null
-    }
-      this.targetNode = {
+        }
+        this.targetNode = {
         active: false,
         location: null
-    }
-      this.wallNode = {
+        }
+        this.wallNode = {
         active: false,
         location: new Set()
-    }
+        }
+        this.sidebar = {
+            open: false
+        }
     }
 
     state(name){
@@ -24,6 +27,8 @@ export default class StateManager{
                 return this.targetNode
             case WALL_NODE:
                 return this.wallNode
+            case SIDEBAR:
+                return this.sidebar
             default:
                 throw new Error('given name value could not match any given case')
         }

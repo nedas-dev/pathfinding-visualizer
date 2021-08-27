@@ -1,152 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+
+$main-bg: rgb(189, 242, 255);
+$table-bg-color: white;
+$li-bg: rgb(235, 194, 190);
+$li-button-hover: rgb(244, 238, 169);
+$logo-bg: rgb(221, 159, 156);
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, sans-serif;
   box-sizing: border-box;
-  position: relative;
+  font-weight: 400;
+  font-size: 18px;
+  background-color: $main-bg;
+  overflow: hidden;
+  user-select: none;
 }
 
 nav#sidebar {
-  background-color: rgb(177, 177, 177);
+  background-color: $li-bg;
   position: fixed;
   left: 0;
   top: 0;
   height: 100%;
-  min-height: 400px;
+  min-height: 350px;
   width: 45px;
-  overflow: hidden;
   transition: 0.5s;
-  z-index: 100;
-  &:hover {
+  z-index: 1;
+  &.active {
+    & ~ main {
+      margin-left: 205px;
+    }
     width: 200px;
+    ul#node-buttons {
+      li.tool {
+        &:hover {
+          background-color: $li-button-hover;
+          cursor: pointer;
+        }
+        span.desc {
+          visibility: visible;
+          opacity: 1;
+          transition: 0.7s ease-in;
+        }
+      }
+    }
   }
-  div#node-buttons {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    height: 90%;
-    justify-content: space-around;
-    div.tool {
+
+  ul#node-buttons {
+    font-family: Roboto Condensed, sans-serif;
+    letter-spacing: 1px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 1rem;
+    width: 200px;
+    height: 100%;
+    li.tool {
       display: flex;
       flex-direction: row;
       align-items: center;
-
-      border-bottom: 1px solid rgb(180, 180, 180);
-      border-top: 1px solid rgb(180, 180, 180);
-      border-radius: 0px;
-      padding: 5px;
+      position: relative;
+      cursor: auto;
       span {
+        visibility: hidden;
+        opacity: 0;
+        transition: 0s;
         padding-left: 10px;
         padding-top: 4px;
-        text-align: center;
-        width: 150px;
+        text-align: left;
+        width: 100%;
       }
-      &:hover {
-        cursor: pointer;
-        border-bottom: 1px solid rgb(134, 134, 134);
-        border-top: 1px solid rgb(133, 133, 133);
-        border-radius: 10px;
-        padding: 5px;
+      img {
+        padding: 5px 5px;
+        width: 55px;
+        height: 45px;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+        &:hover {
+          background-color: $li-button-hover;
+          cursor: pointer;
+        }
       }
+    }
+  }
+
+  div#logo {
+    background-color: $logo-bg;
+    color: rgb(3, 0, 0);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: baseline;
+    box-sizing: border-box;
+    &.open {
+      justify-content: space-around;
+      span.main {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0px);
+      }
+      img {
+        transform: translateX(155px) scaleX(-1);
+      }
+    }
+
+    span.main {
+      padding-left: 10px;
+      padding-right: 35px;
+      transition: 0.6s;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(-200px);
+      color: rgb(0, 60, 190);
+    }
+
+    img {
+      // transition: 0.7s ease-in;
+      cursor: pointer;
+      position: absolute;
+      left: 5px;
+      transition: 0.6s;
     }
   }
 }
 
 main {
-  margin-left: 40px;
-}
+  margin-left: 45px;
+  transition: margin-left 0.5s ease;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  #table {
+    background-color: $table-bg-color;
+    margin: auto;
+    margin-top: 1rem;
+    border-collapse: collapse;
+    width: calc(100% - 30px);
+    max-width: 1400px;
+    margin-bottom: 1rem;
+    tr {
+      td {
+        border: 1px solid black;
+        min-width: 5px;
+        min-height: 5px;
+        &.start-node {
+          background-image: url(../images/start.svg), none;
+          background-repeat: no-repeat;
+          background-size: cover;
+          animation: expanding 1s forwards;
+        }
 
-#table {
-  margin: auto;
-  margin-top: 1rem;
-  border-collapse: collapse;
-  width: 98%;
-  max-width: 1400px;
-  margin-bottom: 1rem;
-  tr {
-    td {
-      border: 1px solid black;
-      min-width: 5px;
-      min-height: 5px;
+        &.target-node {
+          background-image: url(../images/target.svg), none;
+          background-repeat: no-repeat;
+          background-size: cover;
+          animation: expanding 1s forwards;
+        }
 
-      &.start-node {
+        &.wall-node {
+          background-image: url(../images/wall.svg), none;
+          background-repeat: no-repeat;
+          background-size: cover;
+          animation: expanding 0.8s forwards;
+        }
+
+        &.visited {
+          background-color: rgb(219, 219, 219);
+          animation: visited 0.7s forwards;
+
+          @keyframes visited {
+            0% {
+              transform: scale(0.1);
+            }
+            100% {
+              transform: scale(1);
+            }
+          }
+        }
+
+        &.path-node {
+          animation: path-node 1.2s forwards;
+
+          @keyframes path-node {
+            0% {
+              transform: scale(1);
+              background-color: rgb(4, 71, 255);
+              transform: rotateZ(20deg);
+            }
+            50% {
+              transform: scale(1.4);
+              transform: rotateZ(-20deg);
+            }
+            100% {
+              transform: scale(1);
+              background-color: greenyellow;
+              transform: rotateZ(0);
+            }
+          }
+        }
+      }
+    }
+
+    &.start-node {
+      td:hover {
         background-image: url(../images/start.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
-        animation: expanding 1s forwards;
       }
+    }
 
-      &.target-node {
+    &.target-node {
+      td:hover {
         background-image: url(../images/target.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
-        animation: expanding 1s forwards;
       }
+    }
 
-      &.wall-node {
+    &.wall-node {
+      td:hover {
         background-image: url(../images/wall.svg), none;
         background-repeat: no-repeat;
         background-size: cover;
-        animation: expanding 0.8s forwards;
       }
-
-      &.visited {
-        background-color: rgb(219, 219, 219);
-        animation: visited 0.7s forwards;
-
-        @keyframes visited {
-          0% {
-            transform: scale(0.1);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
-      }
-
-      &.path-node {
-        animation: path-node 1.2s forwards;
-
-        @keyframes path-node {
-          0% {
-            transform: scale(1);
-            background-color: rgb(4, 71, 255);
-            transform: rotateZ(20deg);
-          }
-          50% {
-            transform: scale(1.4);
-            transform: rotateZ(-20deg);
-          }
-          100% {
-            transform: scale(1);
-            background-color: greenyellow;
-            transform: rotateZ(0);
-          }
-        }
-      }
-    }
-  }
-
-  &.start-node {
-    td:hover {
-      background-image: url(../images/start.svg), none;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-  }
-
-  &.target-node {
-    td:hover {
-      background-image: url(../images/target.svg), none;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-  }
-
-  &.wall-node {
-    td:hover {
-      background-image: url(../images/wall.svg), none;
-      background-repeat: no-repeat;
-      background-size: cover;
     }
   }
 }
@@ -160,39 +240,5 @@ main {
   }
   100% {
     transform: scale(1);
-  }
-}
-
-div#logo {
-  background-color: rgb(80, 80, 80);
-  color: rgb(255, 255, 255);
-  width: 100%;
-  min-width: 180px;
-  display: flex;
-  align-items: center;
-  padding: 10px 0px;
-  display: flex;
-  justify-content: baseline;
-  span {
-    padding-left: 10px;
-    transition: 0.6s;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateX(-200px);
-  }
-  img {
-    transform: translateX(-105px);
-    transition: 0.7s;
-  }
-  &.open {
-    justify-content: space-around;
-    span {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0px);
-    }
-    img {
-      transform: scaleX(-1);
-    }
   }
 }

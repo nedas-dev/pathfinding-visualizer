@@ -10,7 +10,7 @@ import {
   resetVisitedCSS
 } from './js/domTraversingFuncs.js'
 import StateManager from './js/StateManager.js'
-import {START_NODE, TARGET_NODE, WALL_NODE, totalColumns, totalRows} from './js/settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, totalColumns, totalRows} from './js/settings.js'
 
 const bodyEl = document.getElementById('body')
 const tableEl = document.getElementById('table')
@@ -24,11 +24,15 @@ const resetButton = document.getElementById('reset-button')
 initializeTable(tableEl, bodyEl)
 listenerForTableResizing(tableEl)
 
-startNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, stateManager, bodyEl, tableEl, graph))
+startNodeButton.addEventListener('click', (e) => { 
+  callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, stateManager, bodyEl, tableEl, graph)
+})
 
 targetNodeButton.addEventListener('click', (e) => callbackToActivateStartOrTargetButton(e, TARGET_NODE, targetNodeButton, stateManager, bodyEl, tableEl, graph))
 
-wallNodeButton.addEventListener('click', (e) => callbackToActivateWallButton(e, WALL_NODE, wallNodeButton, stateManager, bodyEl, tableEl, graph))
+wallNodeButton.addEventListener('click', (e) => {
+  callbackToActivateWallButton(e, WALL_NODE, wallNodeButton, stateManager, bodyEl, tableEl, graph)
+})
 
 
 bodyEl.addEventListener('dblclick', e => {
@@ -51,10 +55,20 @@ startButton.addEventListener('click', e => {
   }
 })
 
-document.getElementById('sidebar').addEventListener('mouseenter', (e) => {
-  document.getElementById('logo').classList.add('open')
-
-  document.getElementById('sidebar').addEventListener('mouseleave', e => {
-    document.getElementById('logo').classList.remove('open')
-  }, {once: true})
+document.getElementById('arrow-img').addEventListener('click', (e) => {
+  document.getElementById(SIDEBAR).classList.toggle('active')
+  document.getElementById('logo').classList.toggle('open')
+  stateManager.state(SIDEBAR).open = !stateManager.state(SIDEBAR).open
+  setTimeout(() => {
+    let width = tableEl.clientWidth
+    tableEl.style.height = width * 0.50
+  },150)
+  setTimeout(() => {
+    let width = tableEl.clientWidth
+    tableEl.style.height = width * 0.50
+  },350)
+  setTimeout(() => {
+    let width = tableEl.clientWidth
+    tableEl.style.height = width * 0.50
+  },600)
 })

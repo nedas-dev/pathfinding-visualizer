@@ -23,6 +23,8 @@ export function listenerForTableResizing(tableEl){ // to maintain table's ratio 
     let width = tableEl.clientWidth
     tableEl.style.height = width * 0.50
   })
+
+  
   }
 }
 export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
@@ -82,8 +84,16 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
     graph.addWall(row, col)
   }
 
-  function callbackToDeactivateWallButton(e){
-    bodyEl.removeEventListener('mousemove', handleMouseMove)
+  function deactivateIfClickedOutsideTableEl(e){
+    if(['TD', 'TR', 'TABLE'].includes(e.target.tagName)){
+      stateManager.changeState(stateName, 'active')
+      callbackToActivateWallButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph)
+      return
+    }
+    callbackToDeactivateWallButton()
+  }
+
+  function callbackToDeactivateWallButton(){
     stateManager.changeState(stateName, 'active')
     if(stateManager.anyActive()){
       return
@@ -92,21 +102,30 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
     tableEl.className = ''
     buttonEl.style.cursor = 'pointer'
   }
+  // INSIDE FUNCTIONS ENDS HERE
+
+  if(stateManager.state(WALL_NODE).active === true){
+    return // if wall node is active return
+  }
 
   stateManager.changeState(stateName, 'active')
+  
   if(stateManager.state(stateName).active){ // 
     bodyEl.style.cursor = 'pointer'
     buttonEl.style.cursor = 'pointer'
     tableEl.className = `${stateName}`
     
-    if(stateName === WALL_NODE){
-      bodyEl.addEventListener('mousedown', (e) => {
-        handleMouseMove(e) // bug fixed node (triggers to add a wall when clicked only on a single cell (there is no movement)
-        bodyEl.addEventListener('mousemove', handleMouseMove) // if mouse moving while it is clicked down - add the wall over the cells the user hovers
-      }, {once: true, capture: true})
+    // code below takes care of "drawing" wall nodes on the grid and deactivating it when needed
+    bodyEl.addEventListener('mousedown', (e) => {
+      handleMouseMove(e) // bug fixed node (triggers to add a wall when clicked only on a single cell (there is no movement)
+      bodyEl.addEventListener('mousemove', handleMouseMove) // if mouse moving while it is clicked down - add the wall over the cells the user hovers
+    }, {once: true, capture: true})
 
-      bodyEl.addEventListener('mouseup', callbackToDeactivateWallButton, {once: true}) // once mouse left button is released deactivate wall button
-    }
+    bodyEl.addEventListener('mouseup', () => {
+      bodyEl.removeEventListener('mousemove', handleMouseMove)
+    }, {once: true}) // once mouse left button is released deactivate wall button
+
+    setTimeout(() => bodyEl.addEventListener('click', deactivateIfClickedOutsideTableEl, {once: true}), 0)
   }
 }
 
