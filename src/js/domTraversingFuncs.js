@@ -1,4 +1,3 @@
-import Graph from './Graph.js'
 import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, totalRows, totalColumns} from './settings.js'
 
 export function initializeTable(tableEl, bodyEl){ // adds table rows and columns (tr, td)
@@ -47,16 +46,12 @@ export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl
     if(stateManager.anyActive()){ // checks if any other button's state is activated before this got removed (in that case return, don't execute code below)
       return
     }
-    bodyEl.style.cursor = 'auto'
-    tableEl.className = ''
-    buttonEl.style.cursor = 'pointer'
+    deactivateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl)
   }
 
   stateManager.changeState(stateName, 'active')
   if(stateManager.state(stateName).active){ // 
-    bodyEl.style.cursor = 'pointer'
-    buttonEl.style.cursor = 'pointer'
-    tableEl.className = `${stateName}`
+    activateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl)
     
     setTimeout(() => { // we use settimeout to not fire this event together with the outer event listener (avoiding to get batched together with outer function)
       bodyEl.addEventListener('click', (e) => {
@@ -97,9 +92,7 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
     if(stateManager.anyActive()){
       return
     }
-    bodyEl.style.cursor = 'auto'
-    tableEl.className = ''
-    buttonEl.style.cursor = 'pointer'
+    deactivateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl)
   }
   // INSIDE FUNCTIONS ENDS HERE
 
@@ -110,9 +103,7 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
   stateManager.changeState(stateName, 'active')
   
   if(stateManager.state(stateName).active){ // 
-    bodyEl.style.cursor = 'pointer'
-    buttonEl.style.cursor = 'pointer'
-    tableEl.className = `${stateName}`
+    activateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl)
     
     // code below takes care of "drawing" wall nodes on the grid and deactivating it when needed
     bodyEl.addEventListener('mousedown', (e) => {
@@ -126,68 +117,6 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
 
     setTimeout(() => bodyEl.addEventListener('click', deactivateIfClickedOutsideTableEl, {once: true}), 0)
   }
-}
-
-export function resetCellIfOccupied(e, stateManager, graph){
-  if(e.target.tagName === 'TD' && e.target.classList.length > 2){
-    let classList = [...e.target.classList]
-    let [row, col] = e.target.className.match(/\d+/g)
-
-    if(classList[2] === START_NODE){
-      stateManager.state(START_NODE).location = null
-      e.target.classList.remove(START_NODE)
-    } else if(classList[2] === TARGET_NODE){
-      stateManager.state(TARGET_NODE).location = null
-      e.target.classList.remove(TARGET_NODE)
-    } else if(classList[2] === WALL_NODE){
-      graph.removeWall(row, col)
-      e.target.classList.remove(WALL_NODE)
-    }
-  }
-}
-
-export function resetVisitedCellCSS(){
-  let visitedCells = document.querySelectorAll('td.visited')
-  let pathNodeCells = document.querySelectorAll('td.path-node')
-  for(let i = 0; i < visitedCells.length; i++){
-    visitedCells[i].classList.remove('visited')
-  }
-  for(let i = 0; i < pathNodeCells.length; i++){
-    pathNodeCells[i].classList.remove('path-node')
-  }
-}
-
-export function resetPathFinder(SM, graph){ // resets table's css, graph (everything)
-  resetVisitedCellCSS()
-
-  let wallNodeCellsList = document.querySelectorAll(`td.${WALL_NODE}`)
-  
-  for(let i = 0; i < wallNodeCellsList.length; i++){
-    wallNodeCellsList[i].classList.remove(WALL_NODE)
-  }
-
-  graph.initializeGraph()
-  SM.state(WALL_NODE).location = new Set()
-}
-
-
-
-export function handleSidebarOpenClosed(SM, tableEl){
-  document.getElementById('arrow-img').addEventListener('click', (e) => {
-    document.getElementById(SIDEBAR).classList.toggle('active')
-    document.getElementById('logo').classList.toggle('open')
-    SM.state(SIDEBAR).open = !SM.state(SIDEBAR).open
-    
-    function resizeTableAfterCertainTime(ms){
-      setTimeout(() => {
-        let width = tableEl.clientWidth
-        tableEl.style.height = width * 0.50
-      }, ms)
-    }
-    resizeTableAfterCertainTime(150)
-    resizeTableAfterCertainTime(300)
-    resizeTableAfterCertainTime(600)
-  })
 }
 
 export function callbackForEraseButton(SM, tableEl, bodyEl, graph){
@@ -214,4 +143,103 @@ export function callbackForEraseButton(SM, tableEl, bodyEl, graph){
     }
     bodyEl.style.cursor = "auto" // reset the cursor to auto
   }, {once: true})}, 0)
+}
+
+export function resetPathFinder(SM, graph){ // resets table's css, graph (everything)
+  resetVisitedCellCSS()
+
+  let wallNodeCellsList = document.querySelectorAll(`td.${WALL_NODE}`)
+  
+  for(let i = 0; i < wallNodeCellsList.length; i++){
+    wallNodeCellsList[i].classList.remove(WALL_NODE)
+  }
+
+  graph.initializeGraph()
+  SM.state(WALL_NODE).location = new Set()
+}
+
+export function handleSidebarOpenClosed(SM, tableEl){
+  document.getElementById('arrow-img').addEventListener('click', (e) => {
+    document.getElementById('sidebar').classList.toggle('active')
+    document.getElementById('logo').classList.toggle('open')
+    SM.state(SIDEBAR).open = !SM.state(SIDEBAR).open
+    
+    function resizeTableAfterCertainTime(ms){
+      setTimeout(() => {
+        let width = tableEl.clientWidth
+        tableEl.style.height = width * 0.50
+      }, ms)
+    }
+    resizeTableAfterCertainTime(150)
+    resizeTableAfterCertainTime(300)
+    resizeTableAfterCertainTime(600)
+  })
+}
+
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+//-----------------------SUB FUNCTIONS-----------------------------
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+
+export function activateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl){
+  bodyEl.style.cursor = 'pointer'
+  buttonEl.style.cursor = 'pointer'
+  tableEl.className = `${stateName}`
+}
+
+export function deactivateSpecificButtonCSS(stateName, bodyEl, buttonEl, tableEl){
+  bodyEl.style.cursor = 'auto'
+  buttonEl.style.cursor = 'pointer'
+  tableEl.className = ''
+}
+
+export function resetVisitedCellCSS(){
+  let visitedCells = document.querySelectorAll('td.visited')
+  let pathNodeCells = document.querySelectorAll('td.path-node')
+  let pathNodeCellsNoAnimation = document.querySelectorAll('td.path-node-no-animation')
+  let visitedCellsNoAnimation = document.querySelectorAll('td.visited-no-animation')
+
+  for(let i = 0; i < visitedCells.length; i++){
+    visitedCells[i].classList.remove('visited')
+  }
+  for(let i = 0; i < pathNodeCells.length; i++){
+    pathNodeCells[i].classList.remove('path-node')
+  }
+  for(let i = 0; i < pathNodeCellsNoAnimation.length; i++){
+    pathNodeCellsNoAnimation[i].classList.remove('path-node-no-animation')
+  }
+  for(let i = 0; i < visitedCellsNoAnimation.length; i++){
+    visitedCellsNoAnimation[i].classList.remove('visited-no-animation')
+  }
+}
+
+export function resetCellIfOccupied(e, stateManager, graph){
+  if(e.target.tagName === 'TD' && e.target.classList.length > 2){
+    let classList = [...e.target.classList]
+    let [row, col] = e.target.className.match(/\d+/g)
+
+    switch(classList[2]){
+      case START_NODE:
+        stateManager.state(START_NODE).location = null
+        e.target.classList.remove(START_NODE)
+      case TARGET_NODE:
+        stateManager.state(TARGET_NODE).location = null
+        e.target.classList.remove(TARGET_NODE)
+      case WALL_NODE:
+        graph.removeWall(row, col)
+        e.target.classList.remove(WALL_NODE)
+      case 'visited':
+        e.target.classList.remove('visited')
+      case 'path-node':
+        e.target.classList.remove('path-node')
+      case 'visited-no-animation':
+        e.target.classList.remove('visited-no-animation')
+      case 'path-node-no-animation':
+        e.target.classList.remove('path-node-no-animation')
+        break
+      default:
+        throw new Error(`resetCellIfOccupied func - there was an error in switch statement no such a name as: ${classList[2]}`)
+    }
+  }
 }
