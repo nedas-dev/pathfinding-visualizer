@@ -6,6 +6,8 @@ $table-bg-color: white;
 $li-bg: rgb(235, 194, 190);
 $li-button-hover: rgb(244, 238, 169);
 $logo-bg: rgb(221, 159, 156);
+$selection-menu-color: rgb(158, 200, 255);
+
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
@@ -27,12 +29,14 @@ nav#sidebar {
   width: 45px;
   transition: 0.5s;
   z-index: 1;
+  overflow: hidden;
   &.active {
     & ~ main {
       margin-left: 205px;
     }
     width: 200px;
     ul#node-buttons {
+      overflow: auto;
       li.tool {
         &:hover {
           background-color: $li-button-hover;
@@ -45,18 +49,98 @@ nav#sidebar {
         }
       }
     }
+
+    div#algo {
+      height: auto;
+      width: 100%;
+      padding: 15px 5px;
+      img {
+        display: none;
+      }
+      select {
+        visibility: visible;
+        opacity: 1;
+        display: block;
+      }
+      label {
+        visibility: visible;
+        opacity: 1;
+        display: block;
+      }
+      background-image: unset;
+    }
+
+    div#speed {
+      padding: 10px 5px;
+      label {
+        display: block;
+        text-align: center;
+        font-size: 13px;
+        font-style: italic;
+      }
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  div#speed {
+    padding: 10px 5px;
+    transition: 0.6s;
+    label {
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      font-style: italic;
+    }
+    input {
+      width: 100%;
+    }
+  }
+
+  div#algo {
+    background-color: $selection-menu-color;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    transition: 0.4s ease;
+    height: 45px;
+    width: 55px;
+    overflow: hidden;
+    box-sizing: border-box;
+    img {
+      padding: 5px 5px;
+      width: 45px;
+      height: 45px;
+      box-sizing: border-box;
+    }
+    select {
+      padding: 5px;
+      width: 100%;
+      outline-color: $selection-menu-color;
+      border-color: $selection-menu-color;
+      display: none;
+    }
+
+    label {
+      text-align: center;
+      display: block;
+      font-size: 13px;
+      margin-bottom: 1rem;
+      font-style: italic;
+      display: none;
+    }
   }
 
   ul#node-buttons {
-    overflow: auto;
+    overflow: hidden;
     font-family: Roboto Condensed, sans-serif;
     letter-spacing: 1px;
     list-style: none;
     margin: 0;
     padding: 0;
-    margin-top: 1rem;
     width: 200px;
     height: 100%;
+    box-sizing: border-box;
     li.tool {
       display: flex;
       flex-direction: row;
@@ -86,11 +170,11 @@ nav#sidebar {
       }
 
       &#start-button {
-        margin-bottom: 1rem;
+        border-bottom: 3px solid $logo-bg;
       }
 
       &#wall-node {
-        margin-bottom: 1rem;
+        border-bottom: 3px solid $logo-bg;
       }
     }
   }
@@ -128,7 +212,6 @@ nav#sidebar {
     }
 
     img {
-      // transition: 0.7s ease-in;
       cursor: pointer;
       position: absolute;
       left: 5px;
@@ -191,9 +274,13 @@ main {
           }
         }
 
+        &.visited-no-animation {
+          background-color: rgb(219, 219, 219);
+        }
+
         &.path-node {
           animation: path-node 1.2s forwards;
-
+          background-color: greenyellow;
           @keyframes path-node {
             0% {
               transform: scale(1);
@@ -210,6 +297,10 @@ main {
               transform: rotateZ(0);
             }
           }
+        }
+
+        &.path-node-no-animation {
+          background-color: greenyellow;
         }
       }
     }
@@ -249,5 +340,16 @@ main {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+// for small height phones (or landscape mode)
+@media only screen and (max-height: 415px) {
+  body {
+    nav#sidebar.active {
+      ul#node-buttons {
+        height: 150px;
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON} from './settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, waitTimeInLoop, totalRows, totalColumns, defaultAlgorithm} from './settings.js'
 
 export default class StateManager{
     constructor(){
@@ -20,6 +20,13 @@ export default class StateManager{
         this.eraseButton = {
             active: false,
         }
+        this.waitTime = {
+            inLoop: waitTimeInLoop
+        }
+        this.totalRows = totalRows
+        this.totalColumns = totalColumns
+        this.activeAlgorithm = defaultAlgorithm
+        this.lockdown = false
     }
 
     state(name){

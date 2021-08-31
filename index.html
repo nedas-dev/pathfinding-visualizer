@@ -10,6 +10,22 @@
         <span class="main"><span style="color: black">PATHFINDER</span> <br> by <i>nedas-dev</i></span>
         <img id="arrow-img" width="35" height="35" src="./src/images/right-arrow.svg" />
       </div>
+
+      <div id="speed">
+        <label for="speed-input">Speed</label>
+        <input type="range" id="speed-input" name="speed" value="200"
+               min="0" max="250" step="25">
+      </div>
+
+      <div id="algo">
+        <img src="./src/images/cogs.svg" alt="cogs">
+        <label for="select-algorithm">Pick Algorithm</label>
+        <select id="select-algorithm">
+          <option selected value="Depth-first search">Depth-first search</option>
+          <option value="Breadth-first search">Breadth-first search</option>
+        </select>
+      </div>
+
       <ul id="node-buttons">
         <li id="start-button" class="tool">
           <img src="./src/images/start.svg" /> <span class="desc">Start</span>
@@ -30,11 +46,11 @@
         </li>
 
         <li id="reset-button" class="tool">
-          <img src="./src/images/delete.svg" /> <span class="desc">Reset</span>
+          <img src="./src/images/delete.svg" /> <span class="desc">Clear Board</span>
         </li>
       </ul>
-      
     </nav>
+    
     <main id="main-content">
       <table id="table">
         <!-- In index.js initializeTable function takes care of the table's content -->

@@ -1,12 +1,13 @@
-import {totalRows, totalColumns} from './settings'
+import {totalRows, totalColumns} from '../settings'
 
 export default class DepthFirstPaths {
-    constructor(graphObj, start_location, target_location) {
+    constructor(stateManager, graphObj, start_location, target_location) {
       this.start_location = start_location; /* starting vertex point*/
       this.target_location = target_location // target vertex point
       this.edgeTo = [];
       this.marked = [];
-      
+      this.stateManager = stateManager
+
       for (let i = 0; i < totalRows; i++) {
         let row1 = []
         let row2 = []
@@ -24,11 +25,10 @@ export default class DepthFirstPaths {
     }
   
     async dfs(graphObj, s) {
-      if(this.marked[this.target_location[0]][this.target_location[1]]){
-        return
+      if(!this.marked[this.target_location[0]][this.target_location[1]]){
+        await new Promise(resolve => setTimeout(resolve, this.stateManager.waitTime.inLoop))
+        document.querySelector(`td.cell-${s[0]}-${s[1]}`).classList.add('visited')
       }
-      await new Promise(resolve => setTimeout(resolve, 50))
-      document.querySelector(`td.cell-${s[0]}-${s[1]}`).classList.add('visited')
       this.marked[s[0]][s[1]] = true
       let neighborList = graphObj.vertices[s[0]][s[1]]
       for(let i = 0; i < neighborList.length; i++){
@@ -63,7 +63,7 @@ export default class DepthFirstPaths {
           break
         }
         i = this.edgeTo[i[0]][i[1]]
-        await new Promise(resolve => setTimeout(resolve, 50))
+        await new Promise(resolve => setTimeout(resolve, this.stateManager.waitTime.inLoop))
       }
     }
 }
