@@ -15,7 +15,6 @@ body {
   font-weight: 400;
   font-size: 18px;
   background-color: $main-bg;
-  overflow: hidden;
   user-select: none;
 }
 
@@ -24,8 +23,8 @@ nav#sidebar {
   position: fixed;
   left: 0;
   top: 0;
-  height: 100%;
-  min-height: 350px;
+  min-height: 100%;
+  max-height: 100%;
   width: 45px;
   transition: 0.5s;
   z-index: 1;
@@ -35,6 +34,7 @@ nav#sidebar {
       margin-left: 205px;
     }
     width: 200px;
+    overflow-y: auto;
     ul#node-buttons {
       overflow: auto;
       li.tool {
@@ -176,6 +176,19 @@ nav#sidebar {
       &#wall-node {
         border-bottom: 3px solid $logo-bg;
       }
+
+      &#weight-node.disabled {
+        &:hover {
+          background-color: red;
+          cursor: not-allowed;
+        }
+      }
+      &#weight-node.disabled > img {
+        &:hover {
+          background-color: red;
+          cursor: not-allowed;
+        }
+      }
     }
   }
 
@@ -189,6 +202,7 @@ nav#sidebar {
     display: flex;
     justify-content: baseline;
     box-sizing: border-box;
+    margin-bottom: 1.5rem;
     &.open {
       justify-content: space-around;
       span.main {
@@ -226,14 +240,96 @@ main {
   height: 100%;
   position: relative;
   z-index: 2;
+  overflow: auto;
+  section#info-header {
+    font-size: 12px;
+    margin: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 800px;
+
+    div.info {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 5px;
+      div.node {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 5px;
+        & > div {
+          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+          // background-color: black;
+          display: inline-block;
+          border: 1px solid black;
+        }
+        &.visited-info > div {
+          background-color: rgb(219, 219, 219);
+        }
+        &.path-info > div {
+          background-color: greenyellow;
+        }
+        &.block-info > div {
+          background-color: black;
+        }
+        &.start-info > div {
+          background-image: url(../images/start.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+        &.start-node-info > div {
+          background-image: url(../images/target2.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+        &.target-node-info > div {
+          background-image: url(../images/target.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+        &.block-node-info > div {
+          background-image: url(../images/wall.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+        &.erase-node-info > div {
+          background-image: url(../images/eraser-2.png);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+        &.reset-board-info > div {
+          background-image: url(../images/delete.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+          padding: 1px;
+        }
+      }
+    }
+  }
+
   #table {
     background-color: $table-bg-color;
     margin: auto;
-    margin-top: 1rem;
     border-collapse: collapse;
     width: calc(100% - 30px);
     max-width: 1400px;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     tr {
       td {
         border: 1px solid black;
@@ -255,6 +351,13 @@ main {
 
         &.wall-node {
           background-image: url(../images/wall.svg), none;
+          background-repeat: no-repeat;
+          background-size: cover;
+          animation: expanding 0.8s forwards;
+        }
+
+        &.weight-node {
+          background-image: url(../images/weight.svg), none;
           background-repeat: no-repeat;
           background-size: cover;
           animation: expanding 0.8s forwards;
@@ -328,6 +431,14 @@ main {
         background-size: cover;
       }
     }
+
+    &.weight-node {
+      td:hover {
+        background-image: url(../images/weight.svg), none;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
   }
 }
 
@@ -344,11 +455,11 @@ main {
 }
 
 // for small height phones (or landscape mode)
-@media only screen and (max-height: 415px) {
+@media only screen and (max-height: 500px) {
   body {
     nav#sidebar.active {
       ul#node-buttons {
-        height: 150px;
+        height: auto;
       }
     }
   }

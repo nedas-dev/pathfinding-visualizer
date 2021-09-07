@@ -4,11 +4,6 @@ import {
   deactivateSpecificButtonCSS,
   resetVisitedCellCSS
 } from '../domTraversingFuncs'
-import {
-  bodyEl,
-  tableEl,
-  targetNodeButton
-} from '../../index';
 
 export default class DepthFirstPaths {
     constructor(SM, graphObj) {
@@ -63,7 +58,9 @@ export default class DepthFirstPaths {
         if(![...e.target.classList].includes(TARGET_NODE)){
           return
         }
-        
+        const bodyEl = document.getElementById('body')
+        const tableEl = document.getElementById('table')
+        const targetNodeButton = document.getElementById(TARGET_NODE)
         activateSpecificButtonCSS(TARGET_NODE, bodyEl, targetNodeButton, tableEl)
         document.addEventListener('mousemove', callbackForMouseMove)
         document.addEventListener('mouseup', e => {
@@ -97,7 +94,7 @@ export default class DepthFirstPaths {
     async dfs() {
       let start_location = [...this.SM.state(START_NODE).location]
       let target_location = [...this.SM.state(TARGET_NODE).location]
-      
+
       const dfsInside = async(s) => {
         if(!this.marked[target_location[0]][target_location[1]]){
           await new Promise(resolve => setTimeout(resolve, this.SM.waitTime.inLoop))
@@ -113,7 +110,7 @@ export default class DepthFirstPaths {
             await dfsInside(neighborList[i])
           }
       }
-    }
+      }
       await dfsInside(start_location)
     }
 

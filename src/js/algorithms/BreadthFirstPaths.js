@@ -4,11 +4,6 @@ import {
   deactivateSpecificButtonCSS,
   resetVisitedCellCSS
 } from '../domTraversingFuncs'
-import {
-  bodyEl,
-  tableEl,
-  targetNodeButton
-} from '../../index';
 
 export default class DepthFirstPaths {
     constructor(SM, graphObj) {
@@ -27,6 +22,24 @@ export default class DepthFirstPaths {
         this.SM.lockdown = false;
       })();
     }
+
+    initialize(){
+      this.edgeTo = []
+      this.marked = []
+      let totalRows = this.SM.totalRows
+      let totalColumns = this.SM.totalColumns
+
+      for (let i = 0; i < totalRows; i++) {
+        let row1 = []
+        let row2 = []
+        for(let j = 0; j < totalColumns; j++){
+          row1.push(null)
+          row2.push(false)
+        }
+        this.edgeTo.push(row1)
+        this.marked.push(row2)
+      }
+    } 
 
     cleanUp(){ // method for cleaning up before selecting another algorithm
       for(let i = 0; i < this.removeEventListeners.length; i++){
@@ -63,7 +76,9 @@ export default class DepthFirstPaths {
         if(![...e.target.classList].includes(TARGET_NODE)){
           return
         }
-        
+        const bodyEl = document.getElementById('body')
+        const tableEl = document.getElementById('table')
+        const targetNodeButton = document.getElementById(TARGET_NODE)
         activateSpecificButtonCSS(TARGET_NODE, bodyEl, targetNodeButton, tableEl)
         document.addEventListener('mousemove', callbackForMouseMove)
         document.addEventListener('mouseup', e => {
@@ -74,24 +89,6 @@ export default class DepthFirstPaths {
 
       document.addEventListener('mousedown', callbackForMouseDown)
       this.removeEventListeners.push(() => {document.removeEventListener('mousedown', callbackForMouseDown)})
-    }
-
-    initialize(){
-      this.edgeTo = []
-      this.marked = []
-      let totalRows = this.SM.totalRows
-      let totalColumns = this.SM.totalColumns
-
-      for (let i = 0; i < totalRows; i++) {
-        let row1 = []
-        let row2 = []
-        for(let j = 0; j < totalColumns; j++){
-          row1.push(null)
-          row2.push(false)
-        }
-        this.edgeTo.push(row1)
-        this.marked.push(row2)
-      }
     }
 
     async bfs() {

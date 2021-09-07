@@ -1,4 +1,4 @@
-import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, waitTimeInLoop, totalRows, totalColumns, defaultAlgorithm} from './settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, WEIGHT_NODE, waitTimeInLoop, totalRows, totalColumns, defaultAlgorithm} from './settings.js'
 
 export default class StateManager{
     constructor(){
@@ -11,6 +11,10 @@ export default class StateManager{
             location: null
         }
         this.wallNode = {
+            active: false,
+            location: new Set()
+        }
+        this.weightNode = {
             active: false,
             location: new Set()
         }
@@ -27,6 +31,7 @@ export default class StateManager{
         this.totalColumns = totalColumns
         this.activeAlgorithm = defaultAlgorithm
         this.lockdown = false
+        this.weight_node_available = false
     }
 
     state(name){
@@ -37,6 +42,8 @@ export default class StateManager{
                 return this.targetNode
             case WALL_NODE:
                 return this.wallNode
+            case WEIGHT_NODE:
+                return this.weightNode
             case SIDEBAR:
                 return this.sidebar
             case ERASE_BUTTON:
@@ -67,9 +74,26 @@ export default class StateManager{
                 if(val === null){
                     this.wallNode[key] = !this.wallNode[key]
                 } else if (key === 'location'){
-                    this.wallNode.location.push(val)
+                    this.wallNode.location.add(val)
                 } else{
                     this.wallNode[key] = val
+                }
+                break
+            case WEIGHT_NODE:
+                if(val === null){
+                    this.weightNode[key] = !this.weightNode[key]
+                } else if (key === 'location'){
+                    this.weightNode.location.add(val)
+                } else{
+                    this.weightNode[key] = val
+                }
+                break
+            case 'weight_node_available':
+                this.weight_node_available = key
+                if(key){
+                    document.querySelector('li#weight-node').classList.remove('disabled')
+                } else{
+                    document.querySelector('li#weight-node').classList.add('disabled')
                 }
                 break
             default:
@@ -78,7 +102,7 @@ export default class StateManager{
     }
 
     anyActive(){
-        if(this.startNode.active || this.targetNode.active || this.wallNode.active || this.eraseButton.active){
+        if(this.startNode.active || this.targetNode.active || this.wallNode.active || this.eraseButton.active || this.weightNode.active){
             return true
         }
         return false
