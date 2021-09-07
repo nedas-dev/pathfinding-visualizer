@@ -23,6 +23,8 @@
         <select id="select-algorithm">
           <option selected value="Depth-first search">Depth-first search</option>
           <option value="Breadth-first search">Breadth-first search</option>
+          <option value="Dijkstra-algorithm">Dijkstra's algorithm</option>
+          <option value="A*-algorithm">A* algorithm</option>
         </select>
       </div>
 
@@ -35,6 +37,10 @@
         </li>
         <li id="target-node" class="tool">
           <img src="./src/images/target.svg" /> <span class="desc">Target Node</span>
+        </li>
+
+        <li id="weight-node" class="tool disabled">
+          <img src="./src/images/weight.svg" /> <span class="desc">Weight Node</span>
         </li>
 
         <li id="wall-node" class="tool">
@@ -50,8 +56,49 @@
         </li>
       </ul>
     </nav>
-    
+
     <main id="main-content">
+
+      <section id="info-header">
+
+        <div class="info">
+          <div class="node visited-info">
+            <div></div> - Visited Cell
+          </div>
+          <div class="node path-info">
+            <div></div> - Final Path Cell
+          </div>
+          <div class="node block-info">
+            <div></div> - Blocking Cell
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="node start-info">
+            <div></div> - Start Visualizer
+          </div>
+          <div class="node start-node-info">
+            <div></div> - Add Starting Point Cell
+          </div>
+          <div class="node target-node-info">
+            <div></div> - Add Target Cell
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="node block-node-info">
+            <div></div> - Add Block Cell
+          </div>
+          <div class="node erase-node-info">
+            <div></div> - Reset Cell
+          </div>
+          <div class="node reset-board-info">
+            <div></div> - Reset Board
+          </div>
+        </div>
+
+      </section>
+
       <table id="table">
         <!-- In index.js initializeTable function takes care of the table's content -->
       </table>

@@ -1,4 +1,5 @@
-import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, totalRows, totalColumns} from './settings.js'
+import StateManager from '../../gh-pages/src/js/StateManager.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, SIDEBAR, ERASE_BUTTON, WEIGHT_NODE, totalRows, totalColumns} from './settings.js'
 
 export function initializeTable(tableEl, bodyEl){ // adds table rows and columns (tr, td)
   for(let i = 0; i < totalRows; i++){
@@ -25,9 +26,9 @@ export function listenerForTableResizing(tableEl){ // to maintain table's ratio 
   }
 }
 
-export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
+export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph, graphWeighted){
   function callbackToDeactivateStartOrTargetButton(e){
-    resetCellIfOccupied(e, stateManager, graph)
+    resetCellIfOccupied(e, stateManager, graph, graphWeighted)
 
     if(e.target.tagName === 'TD'){
       let [row, col] = e.target.className.match(/\d+/g)
@@ -62,9 +63,12 @@ export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl
   }
 }
 
-export function callbackToActivateWallButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph){
+export function callbackToActivateWallOrWeightButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph, graphWeighted){
+  if(!stateManager.weight_node_available && stateName === WEIGHT_NODE){
+    return
+  }
   function handleMouseMove(e){
-    resetCellIfOccupied(e, stateManager, graph)
+    resetCellIfOccupied(e, stateManager, graph, graphWeighted)
 
     if(e.target.tagName !== 'TD'){
       return
@@ -75,19 +79,26 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
       return
     }
     e.target.classList.add(stateName)
-    graph.addWall(row, col)
+
+    if(stateName === WALL_NODE){
+      graph.addWall(row, col)
+      graphWeighted.addWall(row, col)
+    } else if (stateName === WEIGHT_NODE){
+      graphWeighted.addWeight(row, col)
+    }
+
   }
 
   function deactivateIfClickedOutsideTableEl(e){
     if(['TD', 'TR', 'TABLE'].includes(e.target.tagName)){
       stateManager.changeState(stateName, 'active')
-      callbackToActivateWallButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph)
+      callbackToActivateWallOrWeightButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph, graphWeighted)
       return
     }
-    callbackToDeactivateWallButton()
+    callbackToDeactivateWallOrWeightButton()
   }
 
-  function callbackToDeactivateWallButton(){
+  function callbackToDeactivateWallOrWeightButton(){
     stateManager.changeState(stateName, 'active')
     if(stateManager.anyActive()){
       return
@@ -96,7 +107,7 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
   }
   // INSIDE FUNCTIONS ENDS HERE
 
-  if(stateManager.state(WALL_NODE).active === true){
+  if(stateManager.state(stateName).active === true){
     return // if wall node is active return
   }
 
@@ -119,14 +130,14 @@ export function callbackToActivateWallButton(event, stateName, buttonEl, stateMa
   }
 }
 
-export function callbackForEraseButton(SM, tableEl, bodyEl, graph){
+export function callbackForEraseButton(SM, tableEl, bodyEl, graph, graphWeighted){
   if(SM.state(ERASE_BUTTON).active){
     return
   }
 
   function handleTableClick(e){
     e.stopPropagation()
-    resetCellIfOccupied(e, SM, graph)
+    resetCellIfOccupied(e, SM, graph, graphWeighted)
   }
 
   bodyEl.style.cursor = "url(/src/images/eraser-2.png) 1 16, pointer"
@@ -145,17 +156,25 @@ export function callbackForEraseButton(SM, tableEl, bodyEl, graph){
   }, {once: true})}, 0)
 }
 
-export function resetPathFinder(SM, graph){ // resets table's css, graph (everything)
+export function resetPathFinder(SM, graph, graphWeighted){ // resets table's css, graph (everything)
   resetVisitedCellCSS()
 
   let wallNodeCellsList = document.querySelectorAll(`td.${WALL_NODE}`)
-  
+  let weightNodeCellsList = document.querySelectorAll(`td.${WEIGHT_NODE}`)
+
   for(let i = 0; i < wallNodeCellsList.length; i++){
     wallNodeCellsList[i].classList.remove(WALL_NODE)
   }
 
+  for(let i = 0; i < weightNodeCellsList.length; i++){
+    weightNodeCellsList[i].classList.remove(WEIGHT_NODE)
+  }
+
   graph.initializeGraph()
+  graphWeighted.initializeGraph()
+
   SM.state(WALL_NODE).location = new Set()
+  SM.state(WEIGHT_NODE).location = new Set()
 }
 
 export function handleSidebarOpenClosed(SM, tableEl){
@@ -214,7 +233,7 @@ export function resetVisitedCellCSS(){
   }
 }
 
-export function resetCellIfOccupied(e, stateManager, graph){
+export function resetCellIfOccupied(e, stateManager, graph, graphWeighted){
   if(e.target.tagName === 'TD' && e.target.classList.length > 2){
     let classList = [...e.target.classList]
     let [row, col] = e.target.className.match(/\d+/g)
@@ -228,7 +247,11 @@ export function resetCellIfOccupied(e, stateManager, graph){
         e.target.classList.remove(TARGET_NODE)
       case WALL_NODE:
         graph.removeWall(row, col)
+        graphWeighted.removeWall(row, col)
         e.target.classList.remove(WALL_NODE)
+      case WEIGHT_NODE:
+        graphWeighted.removeWeight(row, col)
+        e.target.classList.remove(WEIGHT_NODE)
       case 'visited':
         e.target.classList.remove('visited')
       case 'path-node':
@@ -237,9 +260,8 @@ export function resetCellIfOccupied(e, stateManager, graph){
         e.target.classList.remove('visited-no-animation')
       case 'path-node-no-animation':
         e.target.classList.remove('path-node-no-animation')
-        break
-      default:
-        throw new Error(`resetCellIfOccupied func - there was an error in switch statement no such a name as: ${classList[2]}`)
+      // default:
+      //   throw new Error(`resetCellIfOccupied func - there was an error in switch statement no such a name as: ${classList[2]}`)
     }
   }
 }

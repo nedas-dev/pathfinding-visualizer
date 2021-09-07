@@ -98,11 +98,4 @@ export default class Graph {
     return this.vertices[v];
   }
 
-  toString() {
-    for (let i = 0; i < this.V; i++) {
-      for (let j = 0; j < this.vertices[i].length; j++) {
-        console.log(`${i} --> ${this.vertices[i][j]}`);
-      }
-    }
-  }
 }

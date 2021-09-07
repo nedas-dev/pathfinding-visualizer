@@ -2,11 +2,14 @@ import "babel-polyfill" // this is for babel to work with async/await functions
 import './scss/main.scss'
 import DepthFirstPaths from './js/algorithms/DepthFirstPaths.js'
 import BreadthFirstPaths from './js/algorithms/BreadthFirstPaths.js'
-import Graph from './js/Graph.js'
+import DijkstraPaths from './js/algorithms/DijkstraPaths.js'
+import AStarPaths from './js/algorithms/AStarPaths.js'
+import Graph from './js/graphs/Graph.js'
+import EdgeWeightedGraph from './js/graphs/EdgeWeightedGraph.js'
 import { 
   initializeTable, 
   listenerForTableResizing,
-  callbackToActivateWallButton,
+  callbackToActivateWallOrWeightButton,
   callbackToActivateStartOrTargetButton,
   resetVisitedCellCSS,
   handleSidebarOpenClosed,
@@ -14,40 +17,48 @@ import {
   resetPathFinder
 } from './js/domTraversingFuncs.js'
 import StateManager from './js/StateManager.js'
-import {START_NODE, TARGET_NODE, WALL_NODE, totalColumns, totalRows, DFS, BFS} from './js/settings.js'
+import {START_NODE, TARGET_NODE, WALL_NODE, WEIGHT_NODE, ERASE_BUTTON, SIDEBAR, totalColumns, totalRows, DFS, BFS, DIJKSTRA, ASTAR} from './js/settings.js'
 
-export const bodyEl = document.getElementById('body')
-export const tableEl = document.getElementById('table')
-export const startNodeButton = document.getElementById('start-node')
-export const targetNodeButton = document.getElementById('target-node')
-export const wallNodeButton = document.getElementById('wall-node')
-export const SM = new StateManager()
-export const startButton = document.getElementById('start-button')
-export const eraseCellButton = document.getElementById('erase-button')
-export const resetButton = document.getElementById('reset-button')
-export const graph = new Graph(totalRows, totalColumns);
-export let pathFinder = null
-export const selectAlgorithmEl = document.getElementById('select-algorithm');
-export const sidebarEl = document.getElementById('sidebar')
+const bodyEl = document.getElementById('body')
+const tableEl = document.getElementById('table')
+const sidebarEl = document.getElementById(SIDEBAR)
+
+const startButton = document.getElementById('start-button')
+const startNodeButton = document.getElementById(START_NODE)
+const targetNodeButton = document.getElementById(TARGET_NODE)
+const wallNodeButton = document.getElementById(WALL_NODE)
+const weightNodeButton = document.getElementById(WEIGHT_NODE)
+const eraseCellButton = document.getElementById(ERASE_BUTTON)
+const resetButton = document.getElementById('reset-button')
+const selectAlgorithmEl = document.getElementById('select-algorithm');
+
+const SM = new StateManager()
+let graph = new Graph(totalRows, totalColumns)
+let graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns)
+let pathFinder = null
 
 initializeTable(tableEl, bodyEl)
 listenerForTableResizing(tableEl)
 
 startNodeButton.addEventListener('click', (e) => {
-  callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, SM, bodyEl, tableEl, graph)
+  callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, SM, bodyEl, tableEl, graph, graphWeighted)
 })
 
 targetNodeButton.addEventListener('click', (e) => {
-  callbackToActivateStartOrTargetButton(e, TARGET_NODE, targetNodeButton, SM, bodyEl, tableEl, graph)
+  callbackToActivateStartOrTargetButton(e, TARGET_NODE, targetNodeButton, SM, bodyEl, tableEl, graph, graphWeighted)
 })
 
 wallNodeButton.addEventListener('click', (e) => {
-  callbackToActivateWallButton(e, WALL_NODE, wallNodeButton, SM, bodyEl, tableEl, graph)
+  callbackToActivateWallOrWeightButton(e, WALL_NODE, wallNodeButton, SM, bodyEl, tableEl, graph, graphWeighted)
 })
 
-eraseCellButton.addEventListener('click', e => callbackForEraseButton(SM, tableEl, bodyEl, graph))
+weightNodeButton.addEventListener('click', (e) => {
+  callbackToActivateWallOrWeightButton(e, WEIGHT_NODE, weightNodeButton, SM, bodyEl, tableEl, graph, graphWeighted)
+})
 
-resetButton.addEventListener('click', () => resetPathFinder(SM, graph))
+eraseCellButton.addEventListener('click', e => callbackForEraseButton(SM, tableEl, bodyEl, graph, graphWeighted))
+
+resetButton.addEventListener('click', () => resetPathFinder(SM, graph, graphWeighted))
 
 startButton.addEventListener('click', async e => {
   if(SM.state(START_NODE).location && SM.state(TARGET_NODE).location){
@@ -58,10 +69,16 @@ startButton.addEventListener('click', async e => {
     SM.lockdown = true
     switch(SM.activeAlgorithm){
       case BFS:
-        pathFinder = new BreadthFirstPaths(SM, graph)
+        pathFinder = new BreadthFirstPaths(SM, graph);
         break
       case DFS:
-        pathFinder = new DepthFirstPaths(SM, graph)
+        pathFinder = new DepthFirstPaths(SM, graph);
+        break
+      case DIJKSTRA:
+        pathFinder = new DijkstraPaths(SM, graphWeighted);
+        break
+      case ASTAR:
+        pathFinder = new AStarPaths(SM, graphWeighted);
         break
       default:
         throw new Error('selected algorithm does not exist')
@@ -75,7 +92,24 @@ selectAlgorithmEl.addEventListener('change', e => {
   if(e.target.id !== 'select-algorithm'){
     return
   }
+  let previousAlgo = SM.activeAlgorithm
+
   SM.activeAlgorithm = e.target.value
+
+  if(SM.activeAlgorithm === DFS || SM.activeAlgorithm === BFS){
+    SM.changeState('weight_node_available', false)
+  } else{
+    SM.changeState('weight_node_available', true)
+  }
+
+  if((previousAlgo === DIJKSTRA || previousAlgo === ASTAR) && (SM.activeAlgorithm === BFS || SM.activeAlgorithm === DFS)){
+    let weightCells = document.querySelectorAll('td.weight-node')
+    for(let i = 0; i < weightCells.length; i++){
+      let [row, col] = weightCells[i].className.match(/\d+/g)
+      graphWeighted.removeWeight(parseInt(row), parseInt(col))
+      weightCells[i].classList.remove('weight-node')
+    }
+  }
 })
 
 handleSidebarOpenClosed(SM, tableEl)
