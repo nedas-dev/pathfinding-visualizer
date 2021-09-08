@@ -242,9 +242,11 @@ export function resetCellIfOccupied(e, stateManager, graph, graphWeighted){
       case START_NODE:
         stateManager.state(START_NODE).location = null
         e.target.classList.remove(START_NODE)
+        break
       case TARGET_NODE:
         stateManager.state(TARGET_NODE).location = null
         e.target.classList.remove(TARGET_NODE)
+        break
       case WALL_NODE:
         graph.removeWall(row, col)
         graphWeighted.removeWall(row, col)
@@ -264,4 +266,25 @@ export function resetCellIfOccupied(e, stateManager, graph, graphWeighted){
       //   throw new Error(`resetCellIfOccupied func - there was an error in switch statement no such a name as: ${classList[2]}`)
     }
   }
+}
+
+export function handleIntroductionPage(){
+  let closeIntroButton = document.getElementById('close-intro')
+  let showIntroButton = document.getElementById('show-intro')
+  let showIntroWrapperDiv = document.querySelector('div.blur-container')
+
+  closeIntroButton.addEventListener('click', e => {
+    showIntroWrapperDiv.style.display = "none";
+  }, {once: true})
+  
+  showIntroButton.addEventListener('click', e => {
+    showIntroWrapperDiv.style.display = "block";
+    
+    // scrolling to the top of introduction div / page
+    document.querySelector('div#introduction').scrollTop = '0'
+
+    closeIntroButton.addEventListener('click', e => {
+      showIntroWrapperDiv.style.display = "none";
+    }, {once: true})
+  })
 }

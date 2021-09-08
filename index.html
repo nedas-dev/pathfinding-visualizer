@@ -5,6 +5,44 @@
     <title>Pathfinding Visualizer by nedas-dev</title>
   </head>
   <body id="body">
+    <div class="blur-container">
+      <div id="introduction">
+        <p class="header sticky">Introduction 
+          <svg id="close-intro" aria-hidden="true" focusable="false" data-prefix="far" data-icon="times-circle" width="25" height="25" class="svg-inline--fa fa-times-circle fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm101.8-262.2L295.6 256l62.2 62.2c4.7 4.7 4.7 12.3 0 17l-22.6 22.6c-4.7 4.7-12.3 4.7-17 0L256 295.6l-62.2 62.2c-4.7 4.7-12.3 4.7-17 0l-22.6-22.6c-4.7-4.7-4.7-12.3 0-17l62.2-62.2-62.2-62.2c-4.7-4.7-4.7-12.3 0-17l22.6-22.6c4.7-4.7 12.3-4.7 17 0l62.2 62.2 62.2-62.2c4.7-4.7 12.3-4.7 17 0l22.6 22.6c4.7 4.7 4.7 12.3 0 17z"></path></svg>
+        </p>
+        <ul class="steps">
+          <li><strong><i>IMPORTANT:</i></strong> I highly recommend to look at both short videos from the beggining to the end! </li>
+          <hr>
+          <li class="first">Add <strong>Start</strong> and <strong>Target</strong> nodes (<strong>required</strong> to start pathfinding visualizer)</li>
+
+          <li>Add <strong>Wall</strong> nodes (block access to the cell / <strong>not required</strong>)</li>
+          <li><strong>Pick</strong> an algorithm and you're ready to click <strong>Start</strong> and see how the algorithm finds the path to the target node (aka "cell")</li>
+          <li>You can adjust the speed of the visualizer at any point at the top of the sidebar</li>
+        </ul>
+
+        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto2-preview.png">
+          <source src="./src/images/intro-videos/howto2.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        
+        <p class="header header2">Extra Features (weight node, relocating target node)</p>
+        <ul class="steps">
+          <li>Add <strong>Weight</strong> nodes (increase 'visiting' cost of the cell (reg. cell cost: <strong>1.00</strong>, weighted cell cost: <strong>10.00</strong> / <strong>not required</strong>)</li>
+
+          <li><strong>Weight</strong> nodes are only available for weighted algorithms <strong>(Dijkstra, A*)</strong></li>
+
+          <li><strong>Relocating Target Node Feature</strong> You can relocate target node to see the path immediately (without going through the animated visualization). <strong>Directions:</strong> press on the target cell and while holding drag the target cell to any available spot (as showed in the video)</li>
+          <li><strong>Note</strong>: relocating feature only works with target node and only when the current algorithm was started ('Start' button was clicked) <i>at least once</i> after algorithm was chosen</li>
+        </ul>
+        
+        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto3-preview.png">
+          <source src="./src/images/intro-videos/howto3.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>        
+    </div>
+
+
     <nav id="sidebar">
       <div id="logo">
         <span class="main"><span style="color: black">PATHFINDER</span> <br> by <i>nedas-dev</i></span>
@@ -64,6 +102,9 @@
       <section id="info-header">
 
         <div class="info">
+          <div class="node show-intro">
+            <button id="show-intro">Show Introduction</button>
+          </div>
           <div class="node visited-info">
             <div></div> - Visited Cell
           </div>
@@ -71,7 +112,7 @@
             <div></div> - Final Path Cell
           </div>
           <div class="node block-info">
-            <div></div> - Blocking Cell
+            <div></div> - Wall Cell
           </div>
         </div>
 
@@ -94,20 +135,21 @@
           <div class="node weighted-node-info">
             <div></div> - Add Weight Cell
           </div>
-          <div class="node erase-node-info">
-            <div></div> - Erase Cell
-          </div>
-        </div>
-
-        <div class="info">
-          <div class="node reset-board-info">
-            <div></div> - Reset Board
-          </div>
           <div class="node reg-weight-node">
             <div></div> - Reg. node's weight: <strong>1</strong>
           </div>
           <div class="node weighted-node-weight">
-            <div></div> - Weighted node's weight: <strong> 10</strong>
+            <div></div> - Weight node's weight: <strong>10</strong>
+          </div>
+        </div>
+
+        <div class="info">
+
+          <div class="node erase-node-info">
+            <div></div> - Erase Cell
+          </div>
+          <div class="node reset-board-info">
+            <div></div> - Reset Board
           </div>
         </div>
 
