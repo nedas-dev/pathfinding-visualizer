@@ -14,7 +14,8 @@ import {
   resetVisitedCellCSS,
   handleSidebarOpenClosed,
   callbackForEraseButton,
-  resetPathFinder
+  resetPathFinder,
+  handleIntroductionPage
 } from './js/domTraversingFuncs.js'
 import StateManager from './js/StateManager.js'
 import {START_NODE, TARGET_NODE, WALL_NODE, WEIGHT_NODE, ERASE_BUTTON, SIDEBAR, totalColumns, totalRows, DFS, BFS, DIJKSTRA, ASTAR} from './js/settings.js'
@@ -33,8 +34,8 @@ const resetButton = document.getElementById('reset-button')
 const selectAlgorithmEl = document.getElementById('select-algorithm');
 
 const SM = new StateManager()
-let graph = new Graph(totalRows, totalColumns)
-let graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns)
+const graph = new Graph(totalRows, totalColumns)
+const graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns)
 let pathFinder = null
 
 initializeTable(tableEl, bodyEl)
@@ -60,6 +61,34 @@ eraseCellButton.addEventListener('click', e => callbackForEraseButton(SM, tableE
 
 resetButton.addEventListener('click', () => resetPathFinder(SM, graph, graphWeighted))
 
+function handleStartButton(SM, ){
+  if(SM.state(START_NODE).location && SM.state(TARGET_NODE).location){
+    resetVisitedCellCSS()
+    if(pathFinder !== null){
+      pathFinder.cleanUp()
+    }
+    SM.lockdown = true
+    switch(SM.activeAlgorithm){
+      case BFS:
+        pathFinder = new BreadthFirstPaths(SM, graph);
+        break
+      case DFS:
+        pathFinder = new DepthFirstPaths(SM, graph);
+        break
+      case DIJKSTRA:
+        pathFinder = new DijkstraPaths(SM, graphWeighted);
+        break
+      case ASTAR:
+        pathFinder = new AStarPaths(SM, graphWeighted);
+        break
+      default:
+        throw new Error('selected algorithm does not exist')
+    }
+  } else{
+    alert('Start and Target nodes are required for the pathfinder to start!')
+  }
+}
+
 startButton.addEventListener('click', async e => {
   if(SM.state(START_NODE).location && SM.state(TARGET_NODE).location){
     resetVisitedCellCSS()
@@ -84,7 +113,7 @@ startButton.addEventListener('click', async e => {
         throw new Error('selected algorithm does not exist')
     }
   } else{
-    alert('Start and Target nodes are required for the path finder to start!')
+    alert('Start and Target nodes are required for the pathfinder to start!')
   }
 })
 
@@ -113,6 +142,8 @@ selectAlgorithmEl.addEventListener('change', e => {
 })
 
 handleSidebarOpenClosed(SM, tableEl)
+
+handleIntroductionPage()
 
 // prevents pressing on any menu button while the pathfinder is in progress
 sidebarEl.addEventListener('click', e => {

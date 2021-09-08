@@ -264,7 +264,6 @@ main {
           margin-right: 10px;
           width: 20px;
           height: 20px;
-          // background-color: black;
           display: inline-block;
           border: 1px solid black;
         }
@@ -318,6 +317,36 @@ main {
           background-size: contain;
           border: none;
           padding: 1px;
+        }
+        &.reg-weight-node > div {
+          background-color: white;
+          border: 1px solid black;
+        }
+        &.weighted-node-weight > div {
+          background-image: url(../images/weight.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-color: white;
+          border: 1px solid black;
+        }
+        &.weighted-node-info > div {
+          background-image: url(../images/weight.svg);
+          background-repeat: no-repeat;
+          background-size: contain;
+          border: none;
+        }
+        &.show-intro > button {
+          padding: 4px 4px;
+          cursor: pointer;
+          outline: none;
+          border-radius: 5px;
+          border: 1px solid black;
+          background-color: rgb(233, 233, 1);
+          color: black;
+          &:hover {
+            background-color: rgb(255, 255, 0);
+            color: black;
+          }
         }
       }
     }
@@ -442,6 +471,78 @@ main {
   }
 }
 
+div.blur-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  div#introduction {
+    border: 1px solid goldenrod;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-bottom: 2rem;
+    width: 95%;
+    max-width: 800px;
+    max-height: 95%;
+    background-color: rgb(255, 245, 219);
+    z-index: 10;
+    border-radius: 6px;
+    overflow: hidden;
+    color: rgb(54, 47, 47);
+    box-sizing: border-box;
+    overflow: auto;
+    p.header {
+      position: relative;
+      font-size: 1.4rem;
+      border-bottom: 1px solid goldenrod;
+      padding: 1rem 0;
+      background-color: rgb(238, 194, 136);
+      margin: 0;
+      margin-bottom: 1rem;
+      svg {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        &:hover {
+          color: rgb(160, 29, 29);
+          cursor: pointer;
+        }
+      }
+
+      &.sticky {
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 11;
+      }
+    }
+    p.header2 {
+      margin-top: 1rem;
+    }
+    ul.steps {
+      font-size: 15px;
+      width: 80%;
+      text-align: left;
+      li {
+        margin-bottom: 5px;
+        &.first {
+          text-decoration: underline;
+        }
+      }
+    }
+    img {
+      max-height: inherit;
+    }
+  }
+}
+
 @keyframes expanding {
   0% {
     transform: scale(0.1);
@@ -454,12 +555,40 @@ main {
   }
 }
 
-// for small height phones (or landscape mode)
-@media only screen and (max-height: 500px) {
+// /* Portrait and Landscape | Mobile Phones*/
+// @media only screen and (min-device-width: 200px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+//   body {
+//     nav#sidebar.active {
+//       ul#node-buttons {
+//         height: auto;
+//       }
+//     }
+//     div#introduction {
+//       font-size: 12px;
+//       p {
+//         font-size: 12px;
+//       }
+//     }
+//   }
+// }
+
+/* Portrait and Landscape | Tablets*/
+@media screen and (min-device-width: 250px) and (max-device-width: 1024px) {
   body {
     nav#sidebar.active {
       ul#node-buttons {
         height: auto;
+      }
+    }
+
+    div.blur-container {
+      div#introduction {
+        p.header {
+          font-size: 1rem;
+        }
+        ul.steps {
+          font-size: 13px;
+        }
       }
     }
   }
