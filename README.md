@@ -1,4 +1,4 @@
-### Pathfinding visualizer by nedas-dev (Used Vanilla JS, SCSS, HTML)
+### Pathfinding visualizer by nedas-dev (Vanilla JS, SCSS, HTML)
 
 #### Live project's link: https://nedas-dev.github.io/pathfinding-visualizer/
 
