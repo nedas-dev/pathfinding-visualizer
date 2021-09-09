@@ -19,7 +19,7 @@
           <li><strong>Pick</strong> an algorithm and you're ready to click <strong>Start</strong> and see how the algorithm finds the path to the target node (aka "cell")</li>
           <li>You can adjust the speed of the visualizer at any point at the top of the sidebar</li>
         </ul>
-        <!-- <img class="step-1"width="95%" height="auto" src="./src/images/howto2.gif" /> -->
+
         <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto2-preview.png">
           <source src="./src/images/intro-videos/howto2.mp4" type="video/mp4">
           Your browser does not support the video tag.
@@ -32,7 +32,7 @@
           <li><strong>Weight</strong> nodes are only available for weighted algorithms <strong>(Dijkstra, A*)</strong></li>
 
           <li><strong>Relocating Target Node Feature</strong> You can relocate target node to see the path immediately (without going through the animated visualization). <strong>Directions:</strong> press on the target cell and while holding drag the target cell to any available spot (as showed in the video)</li>
-          <li><strong>Note</strong>: relocating feature only works with TARGET NODE and only when the current algorithm was started ('Start' button was clicked) <i>at least once</i> after algorithm was chosen</li>
+          <li><strong>Note</strong>: relocating feature only works with target node and only when the current algorithm was started ('Start' button was clicked) <i>at least once</i> after algorithm was chosen</li>
         </ul>
         
         <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto3-preview.png">
@@ -79,12 +79,12 @@
           <img src="./src/images/target.svg" /> <span class="desc">Target Node</span>
         </li>
 
-        <li id="weight-node" class="tool disabled">
-          <img src="./src/images/weight.svg" /> <span class="desc">Weight Node</span>
-        </li>
-
         <li id="wall-node" class="tool">
           <img src="./src/images/wall.svg" /> <span class="desc">Wall Node</span>
+        </li>
+
+        <li id="weight-node" class="tool disabled">
+          <img src="./src/images/weight.svg" /> <span class="desc">Weight Node</span>
         </li>
 
         <li id="erase-button" class="tool">
@@ -135,16 +135,6 @@
           <div class="node weighted-node-info">
             <div></div> - Add Weight Cell
           </div>
-          <div class="node reg-weight-node">
-            <div></div> - Reg. node's weight: <strong>1</strong>
-          </div>
-          <div class="node weighted-node-weight">
-            <div></div> - Weight node's weight: <strong>10</strong>
-          </div>
-        </div>
-
-        <div class="info">
-
           <div class="node erase-node-info">
             <div></div> - Erase Cell
           </div>
@@ -153,7 +143,24 @@
           </div>
         </div>
 
+        <div class="info">
+          <div class="node reg-weight-node">
+            <div></div> - Reg. node's weight: <strong>1</strong>
+          </div>
+          <div class="node weighted-node-weight">
+            <div></div> - Weight node's weight: <strong>10</strong>
+          </div>
+        </div>
+
       </section>
+
+      <div class="algo-desc dfs"><strong>Depth-first Search</strong> (DFS) algorithm <strong>does not guarantee</strong> the shortest path and is <strong>not weighted</strong> (weight node disabled)</div>
+
+      <div class="algo-desc bfs"><strong>Breadth-first Search</strong> (BFS) algorithm <strong>does guarantee</strong> the shortest path but is <strong>not weighted</strong> (weight node disabled)</div>
+
+      <div class="algo-desc dijkstra"><strong>Dijkstra's</strong> algorithm <strong>guarantees</strong> the shortest path and <strong>is weighted</strong></div>
+
+      <div class="algo-desc a-star"><strong>A*</strong> algorithm <strong>guarantees</strong> the shortest path and <strong>is weighted</strong></div>
 
       <table id="table">
         <!-- In index.js initializeTable function takes care of the table's content -->

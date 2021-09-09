@@ -123,7 +123,38 @@ selectAlgorithmEl.addEventListener('change', e => {
   }
   let previousAlgo = SM.activeAlgorithm
 
+  switch(previousAlgo){
+    case DFS:
+      document.querySelector('div.dfs').style.display = 'none'
+      break
+    case BFS:
+      document.querySelector('div.bfs').style.display = 'none'
+      break
+    case DIJKSTRA:
+      document.querySelector('div.dijkstra').style.display = 'none'
+      break
+    case ASTAR:
+      document.querySelector('div.a-star').style.display = 'none'
+      break
+  }
+
+
   SM.activeAlgorithm = e.target.value
+
+  switch(SM.activeAlgorithm){
+    case DFS:
+      document.querySelector('div.dfs').style.display = 'block'
+      break
+    case BFS:
+      document.querySelector('div.bfs').style.display = 'block'
+      break
+    case DIJKSTRA:
+      document.querySelector('div.dijkstra').style.display = 'block'
+      break
+    case ASTAR:
+      document.querySelector('div.a-star').style.display = 'block'
+      break
+  }
 
   if(SM.activeAlgorithm === DFS || SM.activeAlgorithm === BFS){
     SM.changeState('weight_node_available', false)
