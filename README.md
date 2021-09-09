@@ -1,6 +1,12 @@
-# pathfinding-visualizer
+### Pathfinding visualizer by nedas-dev (Used Vanilla JS, SCSS, HTML)
 
-Path finding visualizer (vanilla js, scss, html)
+#### [Live project's link:](https://nedas-dev.github.io/pathfinding-visualizer/) https://nedas-dev.github.io/pathfinding-visualizer/
 
-<h2> Project's live link: https://nedas-dev.github.io/pathfinding-visualizer/
-<h3>Project is still in progress</h3>
+#### Directory map:
+* **src**
+  * **css** (transpiled from scss)
+  * **images**
+  * **js** (all other JS files)
+  * **scss** (main scss folder)
+  * **index.js** (main JS file)
+* **index.html** (root / main html file)
