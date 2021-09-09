@@ -1,6 +1,6 @@
 ### Pathfinding visualizer by nedas-dev (Used Vanilla JS, SCSS, HTML)
 
-#### [Live project's link:](https://nedas-dev.github.io/pathfinding-visualizer/) https://nedas-dev.github.io/pathfinding-visualizer/
+#### Live project's link: https://nedas-dev.github.io/pathfinding-visualizer/
 
 #### Directory map:
 * **src**
