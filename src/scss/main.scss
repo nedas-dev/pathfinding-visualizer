@@ -16,6 +16,7 @@ body {
   font-size: 18px;
   background-color: $main-bg;
   -webkit-text-size-adjust: none;
+  position: relative;
 }
 
 nav#sidebar {
@@ -361,7 +362,7 @@ main#main-content {
 
   div.algo-desc {
     display: none;
-    font-size: 15px;
+    font-size: 1rem;
     text-align: center;
     padding: 0.5rem 1rem;
     background-color: pink;
@@ -583,7 +584,7 @@ div.blur-container {
 
 @media screen and (min-width: 205px) and (max-width: 667px) {
   main#main-content div.algo-desc {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   main#main-content section#info-header div.info {

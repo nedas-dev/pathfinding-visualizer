@@ -39,7 +39,12 @@ const graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns)
 let pathFinder = null
 
 initializeTable(tableEl, bodyEl)
-listenerForTableResizing(tableEl)
+
+window.onload = (e) => {
+  document.getElementById('cover').style.display = 'none';
+  listenerForTableResizing(tableEl)
+}
+
 
 startNodeButton.addEventListener('click', (e) => {
   callbackToActivateStartOrTargetButton(e, START_NODE, startNodeButton, SM, bodyEl, tableEl, graph, graphWeighted)

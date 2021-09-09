@@ -15,15 +15,13 @@ export function initializeTable(tableEl, bodyEl){ // adds table rows and columns
 }
 
 export function listenerForTableResizing(tableEl){ // to maintain table's ratio of 2:1 (for the cells to be equal size no matter of how wide or tall it is)
-  window.onload = () => {
-      let width = tableEl.clientWidth
-      tableEl.style.height = width * 0.50
+    let width = tableEl.clientWidth
+    tableEl.style.height = width * 0.50
 
   window.addEventListener('resize', () => {
     let width = tableEl.clientWidth
     tableEl.style.height = width * 0.50
   })
-  }
 }
 
 export function callbackToActivateStartOrTargetButton(event, stateName, buttonEl, stateManager, bodyEl, tableEl, graph, graphWeighted){
