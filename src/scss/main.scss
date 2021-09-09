@@ -15,10 +15,13 @@ body {
   font-weight: 400;
   font-size: 18px;
   background-color: $main-bg;
-  user-select: none;
+  -webkit-text-size-adjust: none;
 }
 
 nav#sidebar {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   background-color: $li-bg;
   position: fixed;
   left: 0;
@@ -173,7 +176,7 @@ nav#sidebar {
         border-bottom: 3px solid $logo-bg;
       }
 
-      &#wall-node {
+      &#weight-node {
         border-bottom: 3px solid $logo-bg;
       }
 
@@ -234,7 +237,7 @@ nav#sidebar {
   }
 }
 
-main {
+main#main-content {
   margin-left: 45px;
   transition: margin-left 0.5s ease;
   height: 100%;
@@ -247,14 +250,18 @@ main {
     padding: 1rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: stretch;
     flex-wrap: wrap;
     max-width: 800px;
-
     div.info {
       display: flex;
       flex-direction: column;
+      // align-items: stretch;
+      justify-content: space-evenly;
       padding: 1rem 5px;
+      // border: 1px solid black;
+      width: 200px;
       div.node {
         display: flex;
         flex-direction: row;
@@ -353,6 +360,9 @@ main {
   }
 
   #table {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     background-color: $table-bg-color;
     margin: auto;
     border-collapse: collapse;
@@ -527,10 +537,10 @@ div.blur-container {
       margin-top: 1rem;
     }
     ul.steps {
-      font-size: 15px;
       width: 80%;
       text-align: left;
       li {
+        font-size: 15px;
         margin-bottom: 5px;
         &.first {
           text-decoration: underline;
@@ -555,41 +565,33 @@ div.blur-container {
   }
 }
 
-// /* Portrait and Landscape | Mobile Phones*/
-// @media only screen and (min-device-width: 200px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+@media screen and (min-device-width: 205px) and (max-device-width: 667px) {
+  main#main-content section#info-header div.info {
+    width: inherit;
+  }
+  div.blur-container div#introduction ul.steps li {
+    font-size: 13px;
+  }
+}
+
+// /* Portrait and Landscape | Tablets*/
+// @media screen and (min-device-width: 250px) and (max-device-width: 1024px) {
 //   body {
 //     nav#sidebar.active {
 //       ul#node-buttons {
 //         height: auto;
 //       }
 //     }
-//     div#introduction {
-//       font-size: 12px;
-//       p {
-//         font-size: 12px;
+
+//     div.blur-container {
+//       div#introduction {
+//         p.header {
+//           font-size: 1rem;
+//         }
+//         ul.steps {
+//           font-size: 13px;
+//         }
 //       }
 //     }
 //   }
 // }
-
-/* Portrait and Landscape | Tablets*/
-@media screen and (min-device-width: 250px) and (max-device-width: 1024px) {
-  body {
-    nav#sidebar.active {
-      ul#node-buttons {
-        height: auto;
-      }
-    }
-
-    div.blur-container {
-      div#introduction {
-        p.header {
-          font-size: 1rem;
-        }
-        ul.steps {
-          font-size: 13px;
-        }
-      }
-    }
-  }
-}
