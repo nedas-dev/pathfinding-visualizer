@@ -16,7 +16,7 @@ export default class StateManager{
         }
         this.weightNode = {
             active: false,
-            location: new Set()
+            location: []
         }
         this.sidebar = {
             open: false
@@ -31,7 +31,17 @@ export default class StateManager{
         this.totalColumns = totalColumns
         this.activeAlgorithm = defaultAlgorithm
         this.lockdown = false
-        this.weight_node_available = false
+        this.weight_node_available = false;
+
+        (() => {
+            for(let i = 0; i < totalRows; i++){
+                let row = []
+                for(let j = 0; j < totalColumns; j++){
+                    row.push(false)
+                }
+                this.weightNode.location.push(row)
+            }
+        })()
     }
 
     state(name){
@@ -73,8 +83,6 @@ export default class StateManager{
             case WALL_NODE:
                 if(val === null){
                     this.wallNode[key] = !this.wallNode[key]
-                } else if (key === 'location'){
-                    this.wallNode.location.add(val)
                 } else{
                     this.wallNode[key] = val
                 }
@@ -82,8 +90,6 @@ export default class StateManager{
             case WEIGHT_NODE:
                 if(val === null){
                     this.weightNode[key] = !this.weightNode[key]
-                } else if (key === 'location'){
-                    this.weightNode.location.add(val)
                 } else{
                     this.weightNode[key] = val
                 }
