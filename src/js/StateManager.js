@@ -44,6 +44,18 @@ export default class StateManager{
         })()
     }
 
+    resetWeightAndWallCellLocations(){
+        this.weightNode.location = []
+        for(let i = 0; i < totalRows; i++){
+            let row = []
+            for(let j = 0; j < totalColumns; j++){
+                row.push(false)
+            }
+            this.weightNode.location.push(row)
+        }
+        this.wallNode.location = new Set()
+    }
+
     state(name){
         switch(name){
             case START_NODE:

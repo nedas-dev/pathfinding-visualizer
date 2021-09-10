@@ -168,8 +168,7 @@ export function resetPathFinder(SM, graph, graphWeighted){ // resets table's css
   graph.initializeGraph()
   graphWeighted.initializeGraph()
 
-  SM.state(WALL_NODE).location = new Set()
-  SM.state(WEIGHT_NODE).location = new Set()
+  SM.resetWeightAndWallCellLocations()
 }
 
 export function handleSidebarOpenClosed(SM, tableEl){
