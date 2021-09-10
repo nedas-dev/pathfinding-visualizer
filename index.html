@@ -37,7 +37,6 @@
     <div id="cover">
       <div class="loader""></div>
     </div>
-
     <div class="blur-container">
       <div id="introduction">
         <p class="header sticky">Introduction 
@@ -49,11 +48,11 @@
           <li class="first">Add <strong>Start</strong> and <strong>Target</strong> nodes (<strong>required</strong> to start pathfinding visualizer)</li>
 
           <li>Add <strong>Wall</strong> nodes (block access to the cell / <strong>not required</strong>)</li>
-          <li><strong>Pick</strong> an algorithm and you're ready to click <strong>Start</strong> and see how the algorithm finds the path to the target node (aka "cell")</li>
+          <li><strong>Pick an algorithm</strong> and you're ready to click <strong>Start</strong> and see how the algorithm finds the path to the target node (aka "cell")</li>
           <li>You can adjust the speed of the visualizer at any point at the top of the sidebar</li>
         </ul>
 
-        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto2-preview.png">
+        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto2-preview.webp">
           <source src="./src/images/intro-videos/howto2.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -68,7 +67,7 @@
           <li><strong>Note</strong>: relocating feature only works with target node and only when the current algorithm was started ('Start' button was clicked) <i>at least once</i> after algorithm was chosen</li>
         </ul>
         
-        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto3-preview.png">
+        <video width="85%" height="auto" controls poster="./src/images/intro-videos/howto3-preview.webp">
           <source src="./src/images/intro-videos/howto3.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -90,7 +89,7 @@
 
       <div id="algo">
         <img src="./src/images/cogs.svg" alt="cogs">
-        <label for="select-algorithm">Pick Algorithm</label>
+        <label for="select-algorithm">Pick an Algorithm</label>
         <select id="select-algorithm">
           <optgroup label="Not weighted"></optgroup>
           <option selected value="Depth-first search">Depth-first search</option>
@@ -180,10 +179,10 @@
 
         <div class="info">
           <div class="node reg-weight-node">
-            <div></div> - Reg. node's weight: <strong>1</strong>
+            <div></div> - Reg. cell's cost: <strong style="padding-left: 3px">1.00</strong>
           </div>
           <div class="node weighted-node-weight">
-            <div></div> - Weight node's weight: <strong>10</strong>
+            <div></div> - Wei. cell's cost: <strong style="padding-left: 3px">5.00</strong>
           </div>
         </div>
 

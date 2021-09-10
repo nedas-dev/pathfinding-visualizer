@@ -72,10 +72,7 @@ export function callbackToActivateWallOrWeightButton(event, stateName, buttonEl,
       return
     }
     let [row, col] = e.target.className.match(/\d+/g)
-    let locationCoordinates = `${row}-${col}`
-    if(stateManager.state(stateName).location.has(locationCoordinates)){
-      return
-    }
+
     e.target.classList.add(stateName)
 
     if(stateName === WALL_NODE){

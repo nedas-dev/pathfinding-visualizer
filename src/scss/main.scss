@@ -213,9 +213,13 @@ nav#sidebar {
         opacity: 1;
         visibility: visible;
         transform: translateX(0px);
+        -ms-transform: translateX(0px);
+        -webkit-transform: translateX(0px);
       }
       img {
         transform: translateX(155px) scaleX(-1);
+        -ms-transform: translateX(155px) scaleX(-1);
+        -webkit-transform: translateX(155px) scaleX(-1);
       }
     }
 
@@ -226,6 +230,8 @@ nav#sidebar {
       visibility: hidden;
       opacity: 0;
       transform: translateX(-200px);
+      -ms-transform: translateX(-200px);
+      -webkit-transform: translateX(-200px);
       color: rgb(0, 60, 190);
     }
 
@@ -254,7 +260,7 @@ main#main-content {
     justify-content: space-evenly;
     align-items: stretch;
     flex-wrap: wrap;
-    max-width: 800px;
+    max-width: 1350px;
     div.info {
       display: flex;
       flex-direction: column;
@@ -366,9 +372,9 @@ main#main-content {
     text-align: center;
     padding: 0.5rem 1rem;
     background-color: pink;
-    margin: 10px 1rem;
     border-radius: 3px;
-
+    max-width: 1350px;
+    margin: 1rem 1rem;
     &.dfs {
       display: block;
     }
@@ -424,9 +430,13 @@ main#main-content {
           @keyframes visited {
             0% {
               transform: scale(0.1);
+              -ms-transform: scale(0.1);
+              -webkit-transform: scale(0.1);
             }
             100% {
               transform: scale(1);
+              -ms-transform: scale(1);
+              -webkit-transform: scale(1);
             }
           }
         }
@@ -440,18 +450,21 @@ main#main-content {
           background-color: greenyellow;
           @keyframes path-node {
             0% {
-              transform: scale(1);
+              transform: scale(1) rotateZ(20deg);
+              -ms-transform: scale(1) rotateZ(20deg);
+              -webkit-transform: scale(1) rotateZ(20deg);
               background-color: rgb(4, 71, 255);
-              transform: rotateZ(20deg);
             }
             50% {
-              transform: scale(1.4);
-              transform: rotateZ(-20deg);
+              transform: scale(1.4) rotateZ(-20deg);
+              -ms-transform: scale(1.4) rotateZ(-20deg);
+              -webkit-transform: scale(1.4) rotateZ(-20deg);
             }
             100% {
-              transform: scale(1);
               background-color: greenyellow;
-              transform: rotateZ(0);
+              transform: scale(1) rotateZ(0);
+              -ms-transform: scale(1) rotateZ(0);
+              -webkit-transform: scale(1) rotateZ(0);
             }
           }
         }
@@ -503,7 +516,6 @@ div.blur-container {
   z-index: 9;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-
   div#introduction {
     border: 1px solid goldenrod;
     text-align: center;
@@ -511,17 +523,18 @@ div.blur-container {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate((-50%, -50%));
     padding-bottom: 2rem;
     width: 95%;
     max-width: 800px;
     max-height: 95%;
     background-color: rgb(255, 245, 219);
-    z-index: 10;
     border-radius: 6px;
-    overflow: hidden;
     color: rgb(54, 47, 47);
     box-sizing: border-box;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     p.header {
       position: relative;
       font-size: 1.4rem;
@@ -535,6 +548,8 @@ div.blur-container {
         right: 0;
         top: 50%;
         transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
         &:hover {
           color: rgb(160, 29, 29);
           cursor: pointer;
@@ -545,17 +560,19 @@ div.blur-container {
         position: sticky;
         top: 0;
         left: 0;
-        z-index: 11;
+        z-index: 10;
       }
     }
     p.header2 {
       margin-top: 1rem;
     }
     ul.steps {
-      width: 90%;
+      width: 85%;
       text-align: left;
       margin: auto;
       margin-bottom: 1.5rem;
+      box-sizing: border-box;
+      padding-left: 20px;
       li {
         font-size: 15px;
         margin-bottom: 5px;
@@ -573,12 +590,18 @@ div.blur-container {
 @keyframes expanding {
   0% {
     transform: scale(0.1);
+    -ms-transform: scale(0.1);
+    -webkit-transform: scale(0.1);
   }
   70% {
     transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
   }
   100% {
     transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1);
   }
 }
 
@@ -593,6 +616,12 @@ div.blur-container {
 
   div.blur-container div#introduction ul.steps li {
     font-size: 13px;
+  }
+}
+
+@media screen and (min-width: 1450px) {
+  main#main-content div.algo-desc {
+    margin: 1.3rem auto;
   }
 }
 

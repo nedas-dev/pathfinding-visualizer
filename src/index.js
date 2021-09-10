@@ -35,7 +35,7 @@ const selectAlgorithmEl = document.getElementById('select-algorithm');
 
 const SM = new StateManager()
 const graph = new Graph(totalRows, totalColumns)
-const graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns)
+const graphWeighted = new EdgeWeightedGraph(totalRows, totalColumns, SM)
 let pathFinder = null
 
 initializeTable(tableEl, bodyEl)
